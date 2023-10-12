@@ -18,11 +18,7 @@
             target="_blank"
             variant="text"
           >
-            <v-icon
-              icon="mdi-view-dashboard"
-              size="large"
-              start
-            />
+            <v-icon icon="mdi-view-dashboard" size="large" start />
 
             Components
           </v-btn>
@@ -38,14 +34,12 @@
             target="_blank"
             variant="flat"
           >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
+            <v-icon icon="mdi-speedometer" size="large" start />
 
             Get Started
           </v-btn>
+
+          {{ date.toLocaleDateString() }}
         </v-col>
 
         <v-col cols="auto">
@@ -56,11 +50,7 @@
             target="_blank"
             variant="text"
           >
-            <v-icon
-              icon="mdi-account-group"
-              size="large"
-              start
-            />
+            <v-icon icon="mdi-account-group" size="large" start />
 
             Community
           </v-btn>
@@ -71,5 +61,6 @@
 </template>
 
 <script setup>
-  //
+import { ref } from "vue";
+const date = ref(new Date());
 </script>
