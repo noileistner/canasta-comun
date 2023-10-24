@@ -6,10 +6,7 @@
 
 <style scoped>
 #footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: static;
   margin: auto;
   padding: 25px;
   background: rgb(var(--v-theme-primary));

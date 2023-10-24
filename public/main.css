@@ -1,4 +1,7 @@
 /* font-family: "Young-Serif", serif; */
+:root {
+  --app-font-family: "Young-Serif", serif;
+}
 
 body {
   padding: 0;

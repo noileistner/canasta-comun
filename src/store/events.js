@@ -26,7 +26,7 @@ function createEvent() {
 
 function loadEvents() {
   const events = [];
-  const amount = faker.number.int({ min: 3, max: 10 });
+  const amount = faker.number.int({ min: 1, max: 6 });
 
   for (let i = 0; i < amount; i++) {
     events.push(createEvent());
