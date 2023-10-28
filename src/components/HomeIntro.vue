@@ -5,22 +5,38 @@
         <h1 class="home-intro__title">Encuentra compañeros de basquet</h1>
 
         <p class="home-intro__description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut erat
-          felis, molestie sit amet sapien et, aliquet consectetur nunc. Sed ac
-          lacinia lacus. Ut imperdiet at nibh et viverra. Duis et justo posuere,
-          ornare augue a, euismod metus.
+          Conecta con amantes del baloncesto para organizar partidos
+          emocionantes. Tanto si eres un jugador experimentado como si estás
+          dando tus primeros pasos en la cancha, aprovecha la posibilidad de
+          encontrar compañeros con intereses similares. Crea nuevas amistades y
+          disfruta de la emoción del baloncesto como nunca antes.
         </p>
 
         <router-link to="/crear-cuenta">
-          <v-btn rounded color="secondary" size="large">Crear cuenta</v-btn>
+          <v-btn
+            class="home-intro__button"
+            rounded
+            color="secondary"
+            margin-bottom="10px"
+            size="large"
+            >Crear cuenta</v-btn
+          >
         </router-link>
+
         <router-link to="/iniciar-sesion">
-          <v-btn rounded color="tertiary" size="large">Iniciar sesión</v-btn>
+          <v-btn
+            class="home-intro__button"
+            rounded
+            color="tertiary"
+            size="large"
+            >Iniciar sesión</v-btn
+          >
         </router-link>
       </v-col>
 
       <v-col>
         <v-img
+          class="home-intro__image"
           src="../images/MainPicture.jpg"
           alt="foto basquet"
           height="500"
@@ -31,6 +47,9 @@
 </template>
 
 <style scoped>
+.home-intro {
+  padding-bottom: 50px;
+}
 .home-intro__title {
   font-size: 4rem;
   font-family: var(--app-font-family);
@@ -41,4 +60,17 @@
 .home-intro__description {
   margin-bottom: 25px;
 }
+
+@media (max-width: 600px) {
+  .home-intro__button {
+    height: 45px;
+    width: 160px;
+  }
+}
+
+/* @media (max-width: 660px) { */
+.home-intro__image {
+  min-width: 280px;
+}
+/* } */
 </style>

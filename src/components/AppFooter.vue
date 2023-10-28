@@ -1,11 +1,13 @@
 <template>
-  <div id="footer">
+  <div class="footer">
     <router-link to="/contactanos">Contactanos</router-link>
+    <router-link to="/sobre"> Sobre </router-link>
+    <router-link to="/crear-cuenta">Crear cuenta</router-link>
   </div>
 </template>
 
 <style scoped>
-#footer {
+.footer {
   position: static;
   margin: auto;
   padding: 25px;
@@ -17,15 +19,15 @@
   z-index: 2;
 }
 
-#footer a {
+.footer a {
   display: inline-block;
   margin-right: 20px;
   color: white;
   opacity: 0.7;
   transition: 0.2 ease color;
 }
-#footer a.router-link-active,
-#footer a:hover {
+.footer a.router-link-active,
+.footer a:hover {
   opacity: 1;
 }
 </style>

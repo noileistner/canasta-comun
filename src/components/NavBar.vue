@@ -12,11 +12,8 @@
       <router-link to="/crear-partido">
         <i class="font-icon-plus fa-solid fa-plus fa-lg"></i>
       </router-link>
-      <router-link to="/">
+      <router-link to="/perfil" v-if="!isLoggedIn">
         <i class="font-icon-user fa-solid fa-user"></i>
-      </router-link>
-      <router-link to="/sobre">
-        <i class="font-icon-history fa-solid fa-landmark"></i>
       </router-link>
     </div>
 

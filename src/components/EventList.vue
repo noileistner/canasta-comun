@@ -7,7 +7,7 @@ const { events } = useEventsStore();
 
 <template>
   <div class="event-list">
-    <h1>Eventos próximos</h1>
+    <h1>Próximos eventos</h1>
     <div class="event-list__container mx-auto">
       <EventCard v-for="event in events" :key="event.id" :event="event" />
     </div>

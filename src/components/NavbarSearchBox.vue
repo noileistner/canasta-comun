@@ -9,8 +9,8 @@
         hide-details
         single-line
         rounded
-        placeholder="buscar"
-        append-inner-icon="mdi-magnify"
+        placeholder="busca"
+        append-inner-icon="fa:fas fa-search"
         @keydown.enter="onSearchKeyDown"
         @click:append-inner="onSearchClick"
       />
