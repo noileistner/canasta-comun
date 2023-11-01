@@ -74,6 +74,8 @@ const signInWithGoogle = () => {
           block
           class="mt-2"
           color="tertiary"
+          rounded
+          width="100%"
           >Someter</v-btn
         >
         <v-btn
@@ -82,6 +84,8 @@ const signInWithGoogle = () => {
           block
           class="mt-2"
           color="secondary"
+          rounded
+          width="100%"
           >Iniciar sesión con Google</v-btn
         >
       </v-form>

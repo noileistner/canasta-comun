@@ -7,7 +7,7 @@ const { events } = useEventsStore();
 
 <template>
   <div class="event-list">
-    <h1>Próximos eventos</h1>
+    <h1 class="event-list__title">Próximos eventos</h1>
     <div class="event-list__container mx-auto">
       <EventCard v-for="event in events" :key="event.id" :event="event" />
     </div>
@@ -17,6 +17,10 @@ const { events } = useEventsStore();
 <style scoped>
 .event-list {
   text-align: center;
+}
+.event-list__title {
+  font-size: 5vh;
+  font-family: var(--app-font-family);
 }
 .event-list__container {
   display: grid;

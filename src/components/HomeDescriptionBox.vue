@@ -28,10 +28,11 @@ const iconName = computed(() => `fa:fas fa-${props.icon}`);
 .description-box {
   border-radius: 13px;
   background: #fff;
-  font-size: 3.5vmin;
+  /* font-size: 3vmin; */
   padding: 5px 10px;
-  width: 90%;
-  height: 85%;
+  width: 100%;
+  height: 90%;
+  min-width: 310px;
 }
 
 .description-box__text-row {

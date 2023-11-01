@@ -51,7 +51,7 @@
   padding-bottom: 50px;
 }
 .home-intro__title {
-  font-size: 4rem;
+  font-size: 7vh;
   font-family: var(--app-font-family);
   line-height: 110%;
   margin-bottom: 20px;
@@ -68,9 +68,7 @@
   }
 }
 
-/* @media (max-width: 660px) { */
 .home-intro__image {
   min-width: 280px;
 }
-/* } */
 </style>

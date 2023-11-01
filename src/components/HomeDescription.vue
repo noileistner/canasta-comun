@@ -9,7 +9,9 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
     <v-row cols="12" sm="4">
       <v-col>
         <HomeDescriptionBox icon="search">
-          Busca amigos con intereses comunes
+          <p class="home-description__text">
+            Busca amigos con intereses comunes
+          </p>
 
           <p class="home-description__sub-text">Crea nuevas amistades</p>
           <router-link to="/">
@@ -18,11 +20,13 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
         </HomeDescriptionBox>
       </v-col>
       <v-col>
-        <HomeDescriptionBox icon="tachometer-alt">
-          Organiza y juega partidos de basquet
+        <HomeDescriptionBox icon="edit">
+          <p class="home-description__text">
+            Organiza y juega partidos de basquet
+          </p>
 
           <p class="home-description__sub-text">
-            Pon a prueba tus habilidades y diviértete
+            Prueba tus habilidades y diviértete
           </p>
           <router-link to="/crear-partido">
             <p class="home-description__cta">Organiza un partido</p>
@@ -38,6 +42,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
   width: 100%;
   max-width: 100%;
   background: rgb(var(--v-theme-primary));
+  display: grid;
   text-align: center;
   justify-content: center;
   padding-top: 20px;
@@ -46,24 +51,32 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
 
 .home-description__title {
   color: #fff;
-  font-size: 2.5rem;
+  font-size: 5vh;
   padding-bottom: 20px;
+}
+.home-description__text {
+  font-size: 120%;
 }
 
 .home-description__sub-text {
   opacity: 0.7;
-  font-size: 50%;
+  font-size: 100%;
 }
-
-@media (min-width: 1125px) {
-  .home-description__sub-text {
-    font-size: 80%;
-  }
-}
-
 .home-description__cta {
-  font-size: 1.5vw;
+  font-size: 110%;
   color: #1b8f7c;
   padding-top: 8px;
+}
+
+@media (min-width: 800px) {
+  .home-description__text {
+    font-size: 150%;
+  }
+  .home-description__sub-text {
+    font-size: 130%;
+  }
+  .home-description__cta {
+    font-size: 140%;
+  }
 }
 </style>
