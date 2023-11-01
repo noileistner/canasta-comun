@@ -1,3 +1,11 @@
+<script setup>
+import NavbarSearchBox from "./NavbarSearchBox.vue";
+import { useSessionStore } from "../store/session";
+import { storeToRefs } from "pinia";
+
+const { isLoggedIn } = storeToRefs(useSessionStore());
+</script>
+
 <template>
   <v-toolbar class="nav-bar" color="primary" absolute>
     <router-link class="nav-bar__logo" to="/">
@@ -9,11 +17,16 @@
     <div class="d-none d-sm-flex">
       <NavbarSearchBox />
 
-      <router-link to="/crear-partido">
+      <router-link to="/crear-partido" v-if="isLoggedIn">
         <i class="font-icon-plus fa-solid fa-plus fa-lg"></i>
       </router-link>
-      <router-link to="/perfil" v-if="!isLoggedIn">
+
+      <router-link to="/perfil" v-if="isLoggedIn">
         <i class="font-icon-user fa-solid fa-user"></i>
+      </router-link>
+
+      <router-link to="/crear-cuenta" v-if="!isLoggedIn">
+        <v-btn class="nav-bar__create-account">Crear cuenta</v-btn>
       </router-link>
     </div>
 
@@ -22,10 +35,6 @@
     </v-app-bar-nav-icon>
   </v-toolbar>
 </template>
-
-<script setup>
-import NavbarSearchBox from "./NavbarSearchBox.vue";
-</script>
 
 <style scoped>
 .nav-bar {
@@ -57,6 +66,10 @@ import NavbarSearchBox from "./NavbarSearchBox.vue";
 
 .font-icon-user {
   padding-top: 15px;
+}
+
+.nav-bar__create-account {
+  margin-top: 4px;
 }
 
 .nav-bar a {

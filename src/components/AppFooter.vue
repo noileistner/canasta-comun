@@ -1,8 +1,18 @@
+<script setup>
+import { useSessionStore } from "../store/session";
+import { storeToRefs } from "pinia";
+
+const { isLoggedIn } = storeToRefs(useSessionStore());
+</script>
+
 <template>
   <div class="footer">
     <router-link to="/contactanos">Contactanos</router-link>
     <router-link to="/sobre"> Sobre </router-link>
-    <router-link to="/crear-cuenta">Crear cuenta</router-link>
+    <router-link to="/crear-cuenta" v-if="!isLoggedIn"
+      >Crear cuenta</router-link
+    >
+    <router-link to="/blog">Blog</router-link>
   </div>
 </template>
 

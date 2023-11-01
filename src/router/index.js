@@ -8,6 +8,7 @@ import ContactUs from "../views/ContactUs.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import SignIn from "../views/SignIn.vue";
 import ProfilePage from "../views/ProfilePage.vue";
+import BasketNegatives from "../views/BasketNegatives.vue";
 
 const routes = [
   { path: "/", name: "HomePage", component: HomePage },
@@ -40,6 +41,11 @@ const routes = [
     path: "/perfil",
     name: "ProfilePage",
     component: ProfilePage,
+  },
+  {
+    path: "/blog",
+    name: "BasketNegatives",
+    component: BasketNegatives,
   },
 ];
 

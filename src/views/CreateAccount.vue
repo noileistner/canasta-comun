@@ -17,7 +17,7 @@ const createAccount = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((data) => {
       console.log("Successfully registered");
-      router.push("/todo");
+      router.push("/");
     })
     .catch((error) => {
       console.log(error.code);
@@ -58,15 +58,18 @@ const signInWithGoogle = () => {
         <v-btn
           @click="createAccount"
           type="submit"
-          block
+          rounded
+          width="100%"
           class="mt-2"
           color="tertiary"
           >Someter</v-btn
         >
+        <v-spacer></v-spacer>
         <v-btn
           @click="signInWithGoogle"
           type="submit"
-          block
+          rounded
+          width="100%"
           class="mt-2"
           color="secondary"
           >Crear cuenta con Google</v-btn

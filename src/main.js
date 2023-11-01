@@ -1,7 +1,7 @@
 import App from "./App.vue";
 import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
-import { useFirebase } from "./Firebase";
+import { useFirebase } from "./composables/useFirebase";
 
 const app = createApp(App);
 

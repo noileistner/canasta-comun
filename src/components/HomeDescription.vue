@@ -11,9 +11,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
         <HomeDescriptionBox icon="search">
           Busca amigos con intereses comunes
 
-          <p class="home-description__sub-text">
-            Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,
-          </p>
+          <p class="home-description__sub-text">Crea nuevas amistades</p>
           <router-link to="/">
             <p class="home-description__cta">Descubre otros aficionados</p>
           </router-link>
@@ -24,7 +22,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
           Organiza y juega partidos de basquet
 
           <p class="home-description__sub-text">
-            Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,
+            Pon a prueba tus habilidades y diviértete
           </p>
           <router-link to="/crear-partido">
             <p class="home-description__cta">Organiza un partido</p>
@@ -59,7 +57,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
 
 @media (min-width: 1125px) {
   .home-description__sub-text {
-    font-size: 70%;
+    font-size: 80%;
   }
 }
 

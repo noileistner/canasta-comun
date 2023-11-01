@@ -2,23 +2,10 @@
 import Intro from "../components/HomeIntro.vue";
 import Description from "../components/HomeDescription.vue";
 import EventList from "../components/EventList.vue";
+import { useSessionStore } from "../store/session";
+import { storeToRefs } from "pinia";
 
-import { onMounted, ref } from "vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-const isLoggedIn = ref(false);
-let auth;
-
-onMounted(() => {
-  auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      isLoggedIn.value = true;
-    } else {
-      isLoggedIn.value = false;
-    }
-  });
-});
+const { isLoggedIn } = storeToRefs(useSessionStore());
 </script>
 
 <template>

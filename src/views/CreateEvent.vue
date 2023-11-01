@@ -1,23 +1,3 @@
-<template>
-  <v-container class="create-event">
-    <h1>Crea un partido</h1>
-
-    <v-text-field label="Nombre del evento" maxlength="50"></v-text-field>
-    <v-text-field type="date" label="Fecha del evento"></v-text-field>
-    <v-text-field label="Lugar del evento"></v-text-field>
-    <!-- TODO: google maps -->
-    <input type="file" accept="image/*" id="imageInput" />
-    <img
-      id="imagePreview"
-      width="429"
-      height="242"
-      alt="Image Preview"
-      style="display: none"
-    />
-    <!-- TODO: make image proportionate -->
-  </v-container>
-</template>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const imageInput = document.getElementById("imageInput");
@@ -47,9 +27,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<template>
+  <v-container class="create-event">
+    <v-row>
+      <v-col>
+        <h1>Crea un partido</h1>
+
+        <v-text-field label="Nombre del evento" maxlength="50"></v-text-field>
+        <v-text-field type="date" label="Fecha del evento"></v-text-field>
+        <v-text-field label="Lugar del evento"></v-text-field>
+        <!-- TODO: google maps -->
+        <input type="file" accept="image/*" id="imageInput" />
+        <div class="create-event__img-div">
+          <img
+            id="imagePreview"
+            width="429"
+            height="242"
+            alt="Image Preview"
+            style="display: none"
+          />
+        </div>
+        <!-- TODO: make image proportionate -->
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
 <style scoped>
 .create-event {
   width: 70%;
   justify-content: center;
+}
+.create-event__img-div {
+  height: 252;
+  width: 439;
 }
 </style>
