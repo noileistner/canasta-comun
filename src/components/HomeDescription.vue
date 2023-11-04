@@ -4,14 +4,12 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
 
 <template>
   <v-container class="home-description">
-    <h1 class="home-description__title">Como funciona Canasta Comun</h1>
+    <h1 class="home-description__title">Como funciona Canastacomun</h1>
 
     <v-row cols="12" sm="4">
       <v-col>
         <HomeDescriptionBox icon="search">
-          <p class="home-description__text">
-            Busca amigos con intereses comunes
-          </p>
+          <p class="home-description__text">Busca amigos con intereses comunes</p>
 
           <p class="home-description__sub-text">Crea nuevas amistades</p>
           <router-link to="/">
@@ -21,13 +19,9 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
       </v-col>
       <v-col>
         <HomeDescriptionBox icon="edit">
-          <p class="home-description__text">
-            Organiza y juega partidos de basquet
-          </p>
+          <p class="home-description__text">Organiza y juega partidos de basquet</p>
 
-          <p class="home-description__sub-text">
-            Prueba tus habilidades y diviértete
-          </p>
+          <p class="home-description__sub-text">Prueba tus habilidades y diviértete</p>
           <router-link to="/crear-partido">
             <p class="home-description__cta">Organiza un partido</p>
           </router-link>

@@ -21,6 +21,9 @@ const routes = [
     path: "/crear-partido",
     name: "CreateEvent",
     component: CreateEvent,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/contactanos",
@@ -41,6 +44,9 @@ const routes = [
     path: "/perfil",
     name: "ProfilePage",
     component: ProfilePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/blog",
@@ -72,8 +78,9 @@ async function handleBeforeEach(to, from, next) {
     if (await getCurrentUser()) {
       next();
     } else {
-      alert("you dont have access!");
-      next("/");
+      next({
+        name: "SignIn",
+      });
     }
   } else {
     next();

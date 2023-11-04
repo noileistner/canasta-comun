@@ -5,42 +5,25 @@
         <h1 class="home-intro__title">Encuentra compañeros de basquet</h1>
 
         <p class="home-intro__description">
-          Conecta con amantes del baloncesto para organizar partidos
-          emocionantes. Tanto si eres un jugador experimentado como si estás
-          dando tus primeros pasos en la cancha, aprovecha la posibilidad de
-          encontrar compañeros con intereses similares. Crea nuevas amistades y
-          disfruta de la emoción del baloncesto como nunca antes.
+          Conecta con amantes del baloncesto para organizar partidos emocionantes. Tanto si eres un jugador
+          experimentado como si estás dando tus primeros pasos en la cancha, aprovecha la posibilidad de encontrar
+          compañeros con intereses similares. Crea nuevas amistades y disfruta de la emoción del baloncesto como nunca
+          antes.
         </p>
 
         <router-link to="/crear-cuenta">
-          <v-btn
-            class="home-intro__button"
-            rounded
-            color="secondary"
-            margin-bottom="10px"
-            size="large"
+          <v-btn class="home-intro__button" rounded color="secondary" margin-bottom="10px" size="large"
             >Crear cuenta</v-btn
           >
         </router-link>
 
         <router-link to="/iniciar-sesion">
-          <v-btn
-            class="home-intro__button"
-            rounded
-            color="tertiary"
-            size="large"
-            >Iniciar sesión</v-btn
-          >
+          <v-btn class="home-intro__button" rounded color="tertiary" size="large">Iniciar sesión</v-btn>
         </router-link>
       </v-col>
 
       <v-col>
-        <v-img
-          class="home-intro__image"
-          src="../images/MainPicture.jpg"
-          alt="foto basquet"
-          height="500"
-        />
+        <v-img class="home-intro__image" src="../images/MainPicture.jpg" alt="foto basquet" height="500" />
       </v-col>
     </v-row>
   </v-container>

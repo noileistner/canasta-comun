@@ -12,7 +12,7 @@ function handleSignOut() {
       router.push("/");
     })
     .catch((error) => {
-      console.log("error");
+      console.log("error", error);
     });
 }
 </script>
@@ -23,22 +23,13 @@ function handleSignOut() {
       <v-col class="profile__row-1">
         <h1>Nói Leistner</h1>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis
-          laborum assumenda voluptate molestiae libero nam rem perferendis
-          magnam nihil eius voluptates beatae, odio doloremque et dolorum
-          repellendus harum fugiat tenetur?
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis laborum assumenda voluptate molestiae libero
+          nam rem perferendis magnam nihil eius voluptates beatae, odio doloremque et dolorum repellendus harum fugiat
+          tenetur?
         </p>
         <p class="profile__age"><i class="fa-solid fa-cake-candles"></i> 17</p>
-        <p class="profile__location">
-          <i class="fa-solid fa-location-dot"></i> Sitges, España
-        </p>
-        <v-btn
-          class="profile__sign-out-btn"
-          rounded
-          color="secondary"
-          @click="handleSignOut"
-          >Cerrar sesión</v-btn
-        >
+        <p class="profile__location"><i class="fa-solid fa-location-dot"></i> Sitges, España</p>
+        <v-btn class="profile__sign-out-btn" rounded color="secondary" @click="handleSignOut">Cerrar sesión</v-btn>
       </v-col>
 
       <v-col>
@@ -57,6 +48,7 @@ function handleSignOut() {
   display: grid;
   justify-content: center;
   padding-bottom: 262px;
+  width: 70%;
 }
 .profile__row-1 {
   padding-left: 30px;

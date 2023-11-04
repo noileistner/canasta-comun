@@ -9,7 +9,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 <template>
   <v-toolbar class="nav-bar" color="primary" absolute>
     <router-link class="nav-bar__logo" to="/">
-      <h1>CanastaComun</h1>
+      <h1>Canastacomun</h1>
     </router-link>
 
     <v-spacer />
@@ -38,7 +38,6 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 
 <style scoped>
 .nav-bar {
-  /* position: fixed; */
   top: 0;
   left: 0;
   right: 0;

@@ -5,15 +5,12 @@
  */
 
 // Plugins
-import { loadFonts } from './webfontloader'
-import vuetify from './vuetify'
-import pinia from '../store'
-import router from '../router'
+import router from "../router";
+import pinia from "../store";
+import vuetify from "./vuetify";
+import { loadFonts } from "./webfontloader";
 
-export function registerPlugins (app) {
-  loadFonts()
-  app
-    .use(vuetify)
-    .use(router)
-    .use(pinia)
+export function registerPlugins(app) {
+  loadFonts();
+  app.use(vuetify).use(router).use(pinia);
 }

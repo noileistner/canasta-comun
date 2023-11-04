@@ -9,9 +9,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   <div class="footer">
     <router-link to="/contactanos">Contactanos</router-link>
     <router-link to="/sobre"> Sobre </router-link>
-    <router-link to="/crear-cuenta" v-if="!isLoggedIn"
-      >Crear cuenta</router-link
-    >
+    <router-link to="/crear-cuenta" v-if="!isLoggedIn">Crear cuenta</router-link>
     <router-link to="/blog">Blog</router-link>
   </div>
 </template>
@@ -24,14 +22,14 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   background: rgb(var(--v-theme-primary));
   color: white;
   display: flex;
-  align-items: center;
+  justify-content: center;
   border-top: 7px solid rgb(var(--v-theme-secondary));
   z-index: 2;
 }
 
 .footer a {
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 40px;
   color: white;
   opacity: 0.7;
   transition: 0.2 ease color;
