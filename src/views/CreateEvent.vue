@@ -1,63 +1,96 @@
 <script setup>
-//imports
-import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { onMounted, ref } from "vue";
+import { addDoc, collection } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import { useField, useForm } from "vee-validate";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFirebase } from "../composables/useFirebase";
 
-//events collection refs
-const { db } = useFirebase();
-const eventCollectionRef = collection(db, "events");
-const eventCollectionQuery = query(eventCollectionRef, orderBy("date", "desc"));
 const router = useRouter();
 
-//events
-const events = ref([]);
+const { handleSubmit } = useForm({
+  validationSchema: {
+    name(value) {
+      if (value?.length >= 5) return true;
 
-function uptadeEvent(querySnapshot) {
-  const fbEvents = [];
-  querySnapshot.forEach((doc) => {
-    const event = {
-      id: doc.id,
-      content: doc.data().content,
-      organizer: doc.data().organizer,
-      image: doc.data().image,
-      location: doc.data().location,
-      date: doc.data().date,
-    };
-    fbEvents.push(event);
-  });
-  events.value = fbEvents;
-}
+      return "Nombre tiene que tener un minimo de 5 caracteres";
+    },
+    date(value) {
+      if (value?.length) return true;
 
-//connect firebase
-function connectFirebase() {
-  onSnapshot(eventCollectionQuery, uptadeEvent);
-}
+      return "Fecha tiene que estar en el futuro.";
+    },
+    location(value) {
+      if (value?.length) return true;
 
-//mounted
-onMounted(() => {
-  connectFirebase();
+      return "Ubicacion tiene que ser valida.";
+    },
+    image() {
+      return true;
+    },
+  },
 });
 
-// add Event
-const newEventName = ref("");
-const newEventOrganizer = ref("");
-const newEventImage = ref("");
-const newEventLocation = ref("");
-const newEventDate = ref("");
+const name = useField("name");
+const date = useField("date");
+const location = useField("location");
+const image = useField("image");
 
-const addEvent = () => {
-  console.log("Add Event");
-  addDoc(eventCollectionRef, {
-    content: newEventName.value,
-    organizer: newEventOrganizer.value,
-    image: newEventImage.value,
-    location: newEventLocation.value,
-    date: newEventDate.value,
-  });
-  // newEventName.value = "";
-};
+const submit = handleSubmit((values) => {
+  addEvent(values);
+});
+
+const isSubmitting = ref(false);
+const error = ref(false);
+
+const { db } = useFirebase();
+const eventsCollection = collection(db, "events");
+
+/**
+ * Creates a new event and stores it in firestore
+ *
+ * @param {Object} values
+ */
+async function addEvent(values) {
+  const { name, date, location } = values;
+  const organizer = ""; //TODO: fetch organizer from current user
+  console.log(image.value);
+
+  const { imageUrl } = await uploadImage();
+  console.log("imageUrl", imageUrl);
+
+  isSubmitting.value = true;
+  error.value = false;
+
+  try {
+    const event = await addDoc(eventsCollection, {
+      name,
+      organizer,
+      // image,
+      location,
+      date,
+    });
+    router.push({ name: "EventDetails", params: { id: event.id } });
+  } catch (e) {
+    error.value = true;
+    console.error(e);
+  } finally {
+    isSubmitting.value = false;
+  }
+}
+
+async function uploadImage() {
+  const { app } = useFirebase();
+  const storage = getStorage(app);
+  const storageReference = storageRef(storage, `event-images/${image.value.name}`);
+  const snapshot = await uploadBytes(storageReference, image.value);
+
+  const imageUrl = await getDownloadURL(snapshot.ref);
+
+  return {
+    imageUrl,
+  };
+}
 
 // Image
 document.addEventListener("DOMContentLoaded", () => {
@@ -91,24 +124,61 @@ document.addEventListener("DOMContentLoaded", () => {
 <template>
   <v-container class="create-event">
     <v-row>
+      <v-col cols="7">
+        <v-alert
+          v-if="error"
+          justify-content="center"
+          density="compact"
+          type="error"
+          variant="tonal"
+          title="Ha habido un error"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!"
+        ></v-alert>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <h1>Crea un partido</h1>
-        <v-form @submit.prevent="addEvent">
-          <v-text-field v-model="newEventName" label="Nombre del evento" maxlength="50"></v-text-field>
 
-          <v-text-field v-model="newEventDate" type="date" label="Fecha del evento"></v-text-field>
+        <v-form @submit.prevent="submit">
+          <v-text-field
+            v-model="name.value.value"
+            :error-messages="name.errorMessage.value"
+            label="Nombre del evento"
+            maxlength="50"
+          />
 
-          <v-text-field v-model="newEventLocation" label="Lugar del evento"></v-text-field>
+          <v-text-field
+            v-model="date.value.value"
+            :error-messages="date.errorMessage.value"
+            type="date"
+            label="Fecha del evento"
+          />
+
+          <v-text-field
+            v-model="location.value.value"
+            :error-messages="location.errorMessage.value"
+            label="Lugar del evento"
+          />
           <!-- TODO: google maps -->
 
-          <input v-bind="newEventImage" type="file" accept="image/*" id="imageInput" />
+          <v-file-input v-model="image.value.value" accept="image/*" />
           <div class="create-event__img-div">
             <img id="imagePreview" width="429" height="242" alt="Image Preview" style="display: none" />
           </div>
           <!-- TODO: make image proportionate -->
 
           <div class="text-right">
-            <v-btn class="create-event__btn" type="submit" size="large" rounded color="secondary">Crear partido</v-btn>
+            <v-btn
+              class="create-event__btn"
+              type="submit"
+              size="large"
+              rounded
+              color="secondary"
+              :loading="isSubmitting"
+            >
+              Crear partido
+            </v-btn>
           </div>
         </v-form>
       </v-col>

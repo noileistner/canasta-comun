@@ -1,14 +1,15 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomePage from "../views/HomePage.vue";
 import AboutMe from "../views/AboutMe.vue";
-import CreateEvent from "../views/CreateEvent.vue";
+import BasketNegatives from "../views/BasketNegatives.vue";
 import ContactUs from "../views/ContactUs.vue";
 import CreateAccount from "../views/CreateAccount.vue";
-import SignIn from "../views/SignIn.vue";
+import CreateEvent from "../views/CreateEvent.vue";
+import EventDetails from "../views/EventDetails.vue";
+import HomePage from "../views/HomePage.vue";
 import ProfilePage from "../views/ProfilePage.vue";
-import BasketNegatives from "../views/BasketNegatives.vue";
+import SignIn from "../views/SignIn.vue";
 
 const routes = [
   { path: "/", name: "HomePage", component: HomePage },
@@ -53,6 +54,11 @@ const routes = [
     name: "BasketNegatives",
     component: BasketNegatives,
   },
+  {
+    path: "/detalles-evento/:id",
+    name: "EventDetails",
+    component: EventDetails,
+  },
 ];
 
 const router = createRouter({
@@ -68,7 +74,7 @@ function getCurrentUser() {
         removeListener();
         resolve(user);
       },
-      reject
+      reject,
     );
   });
 }
