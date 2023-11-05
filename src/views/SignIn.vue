@@ -43,8 +43,8 @@ const signInWithGoogle = () => {
 
 <template>
   <v-container class="signIn-input">
-    <h1 style="padding-left: 25%">Inicia sesión con una cuenta existente</h1>
-    <v-sheet class="mx-auto signIn-input__details">
+    <v-card class="mx-auto pa-12 pb-8" max-width="800" elevation="0">
+      <h1>Inicia sesión con una cuenta existente</h1>
       <v-form fast-fail @submit.prevent>
         <v-text-field v-model="email" label="Email"></v-text-field>
 
@@ -56,23 +56,15 @@ const signInWithGoogle = () => {
         />
         <p v-if="errMsg">{{ errMsg }}</p>
 
-        <v-btn @click="register" type="submit" block class="mt-2" color="tertiary" rounded width="100%">Someter</v-btn>
-        <v-btn @click="signInWithGoogle" type="submit" block class="mt-2" color="secondary" rounded width="100%">
+        <v-btn @click="register" type="submit" block class="mt-2" color="tertiary" rounded>Someter</v-btn>
+        <v-btn @click="signInWithGoogle" type="submit" block class="mt-2" color="secondary" rounded>
           Iniciar sesión con Google
         </v-btn>
       </v-form>
-      <router-link :to="{ name: 'CreateAccount' }">Crear cuenta nueva</router-link>
-    </v-sheet>
+      <v-card-text class="text-center">
+        Aun no tienes cuenta?
+        <router-link :to="{ name: 'CreateAccount' }" color="secondary"> Crear cuenta </router-link>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
-
-<style scoped>
-.signIn-input {
-  padding-bottom: 188px;
-  justify-content: center;
-}
-.signIn-input__details {
-  padding-top: 10px;
-  width: 50%;
-}
-</style>

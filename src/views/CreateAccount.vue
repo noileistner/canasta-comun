@@ -35,8 +35,8 @@ const signInWithGoogle = () => {
 
 <template>
   <v-container class="create-account-input">
-    <h1 style="padding-left: 25%">Crea una cuenta</h1>
-    <v-sheet class="mx-auto create-account-input__details">
+    <v-card class="mx-auto pa-12 pb-8" max-width="800" elevation="0">
+      <h1>Crea una cuenta</h1>
       <v-form fast-fail @submit.prevent>
         <v-text-field v-model="userName" label="Nombre"></v-text-field>
 
@@ -55,19 +55,10 @@ const signInWithGoogle = () => {
           Crear cuenta con Google
         </v-btn>
       </v-form>
-      <router-link :to="{ name: 'SignIn' }">Ya tengo cuenta</router-link>
-    </v-sheet>
+      <v-card-text class="text-center">
+        Ya tienes cuenta?
+        <router-link :to="{ name: 'SignIn' }" color="secondary"> Iniciar sesión </router-link>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
-
-<style scoped>
-.create-account-input {
-  padding-bottom: 188px;
-  justify-content: center;
-}
-
-.create-account-input__details {
-  padding-top: 10px;
-  width: 50%;
-}
-</style>
