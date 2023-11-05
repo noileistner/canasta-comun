@@ -25,19 +25,18 @@ const { handleSubmit } = useForm({
 
       return "Ubicacion tiene que ser valida.";
     },
-    image() {
-      return true;
-    },
   },
 });
 
 const name = useField("name");
 const date = useField("date");
 const location = useField("location");
-const image = useField("image");
+const image = ref(null);
 
-const submit = handleSubmit((values) => {
-  addEvent(values);
+const submit = handleSubmit(async (values) => {
+  isSubmitting.value = true;
+  await addEvent(values);
+  isSubmitting.value = false;
 });
 
 const isSubmitting = ref(false);
@@ -54,71 +53,60 @@ const eventsCollection = collection(db, "events");
 async function addEvent(values) {
   const { name, date, location } = values;
   const organizer = ""; //TODO: fetch organizer from current user
-  console.log(image.value);
 
-  const { imageUrl } = await uploadImage();
-  console.log("imageUrl", imageUrl);
+  const imageUrl = await uploadImage();
+  const payload = { name, organizer, location, date };
+  if (imageUrl) {
+    payload.imageUrl = imageUrl;
+  }
 
-  isSubmitting.value = true;
   error.value = false;
 
   try {
-    const event = await addDoc(eventsCollection, {
-      name,
-      organizer,
-      // image,
-      location,
-      date,
-    });
+    const event = await addDoc(eventsCollection, payload);
     router.push({ name: "EventDetails", params: { id: event.id } });
   } catch (e) {
     error.value = true;
     console.error(e);
-  } finally {
-    isSubmitting.value = false;
   }
 }
 
 async function uploadImage() {
+  const [file] = image.value;
+  if (!file) {
+    return;
+  }
   const { app } = useFirebase();
   const storage = getStorage(app);
-  const storageReference = storageRef(storage, `event-images/${image.value.name}`);
-  const snapshot = await uploadBytes(storageReference, image.value);
+  const storageReference = storageRef(storage, `event-images/${file.name}`);
+  const snapshot = await uploadBytes(storageReference, file);
 
   const imageUrl = await getDownloadURL(snapshot.ref);
 
-  return {
-    imageUrl,
-  };
+  return imageUrl;
 }
 
-// Image
-document.addEventListener("DOMContentLoaded", () => {
-  const imageInput = document.getElementById("imageInput");
-  const imagePreview = document.getElementById("imagePreview");
-  //   const container = document.getElementByClass("create-event");
+const localImageUrl = ref(null);
 
-  if (imageInput && imagePreview) {
-    imageInput.addEventListener("change", function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          imagePreview.src = e.target.result;
-          imagePreview.style.display = "block";
-          //   container.style.paddingBottom = "255px";
-        };
-        reader.readAsDataURL(file);
-      } else {
-        imagePreview.style.display = "none";
-        // container.style.paddingBottom = "0px";
-      }
-    });
+function createImage(file) {
+  console.log(file);
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    localImageUrl.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function onFileChange() {
+  const [file] = image.value;
+
+  if (!file) {
+    return;
   }
-  //   if (imagePreview.style.display === "block") {
-  //   } else {
-  //   }
-});
+
+  createImage(file);
+}
 </script>
 
 <template>
@@ -162,11 +150,17 @@ document.addEventListener("DOMContentLoaded", () => {
           />
           <!-- TODO: google maps -->
 
-          <v-file-input v-model="image.value.value" accept="image/*" />
-          <div class="create-event__img-div">
-            <img id="imagePreview" width="429" height="242" alt="Image Preview" style="display: none" />
-          </div>
-          <!-- TODO: make image proportionate -->
+          <v-file-input
+            v-model="image"
+            type="file"
+            accept="image/*"
+            label="Foto del evento"
+            hint="Esta sera la portada de tu evento."
+            @change="onFileChange"
+          />
+          <v-fade-transition>
+            <v-img v-if="localImageUrl" width="439" :src="localImageUrl" />
+          </v-fade-transition>
 
           <div class="text-right">
             <v-btn
@@ -189,10 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
 <style scoped>
 .create-event {
   width: 70%;
-}
-.create-event__img-div {
-  height: 252;
-  width: 439;
 }
 .create-event__btn {
   margin-top: 20px;
