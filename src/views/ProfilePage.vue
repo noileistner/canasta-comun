@@ -1,4 +1,5 @@
 <script setup>
+import ContentContainer from "@/components/ContentContainer.vue";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 
@@ -18,62 +19,64 @@ function handleSignOut() {
 </script>
 
 <template>
-  <v-container class="profile">
-    <v-row>
-      <v-col class="profile__row-1">
-        <h1>Nói Leistner</h1>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis laborum assumenda voluptate molestiae libero
-          nam rem perferendis magnam nihil eius voluptates beatae, odio doloremque et dolorum repellendus harum fugiat
-          tenetur?
-        </p>
-        <p class="profile__age"><i class="fa-solid fa-cake-candles"></i> 17</p>
-        <p class="profile__location"><i class="fa-solid fa-location-dot"></i> Sitges, España</p>
-        <v-btn class="profile__sign-out-btn" rounded color="secondary" @click="handleSignOut">Cerrar sesión</v-btn>
-      </v-col>
+  <ContentContainer class="profile">
+    <v-card min-width="350" variant="flat">
+      <v-card-title class="profile__user-name">Nói Leistner</v-card-title>
+      <v-card-text>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis laborum assumenda voluptate molestiae libero nam
+        rem perferendis magnam nihil eius voluptates beatae, odio doloremque et dolorum repellendus harum fugiat
+        tenetur?
+      </v-card-text>
+      <v-card-text class="profile__details profile__all"
+        ><v-icon class="fa-solid fa-cake-candles" color="secondary" /> 17</v-card-text
+      >
+      <v-card-text class="profile__details profile__all"
+        ><v-icon class="fa-solid fa-location-dot" color="secondary" /> Sitges, España</v-card-text
+      >
+      <v-btn class="profile__sign-out-btn" rounded color="secondary" @click="handleSignOut">Cerrar sesión</v-btn>
+    </v-card>
 
-      <v-col>
-        <img
+    <template #image>
+      <v-card variant="flat" min-width="350">
+        <v-img
           src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/A-Alamy-BXWK5E_vvmkuf.jpg"
           alt="Foto de Perfil"
           class="profile__photo"
+          width="350"
+          height="350"
+          cover
         />
-      </v-col>
-    </v-row>
-  </v-container>
+        <!-- <TwicImg
+          class="profile__photo"
+          src="o/event-images%2FIMG_7999.jpg?alt=media&token=540b00bf-ade8-4016-a290-04e146d27961"
+          width="350px"
+          height="350px"
+        /> -->
+      </v-card>
+    </template>
+  </ContentContainer>
 </template>
 
 <style scoped>
-.profile {
-  display: grid;
-  justify-content: center;
-  padding-bottom: 262px;
-  width: 70%;
+.profile__user-name {
+  font-family: var(--app-font-family);
+  font-size: 3.5vw;
+  padding-top: 8px;
+  padding-bottom: 20px;
 }
-.profile__row-1 {
-  padding-left: 30px;
+.profile__all {
+  padding-bottom: 20px;
+  padding-top: 0;
 }
-.profile__age {
-  padding-top: 15px;
-  font-size: 110%;
-}
-.profile__location {
-  margin-top: 10px;
-  font-size: 110%;
+.profile__details {
+  font-size: 1.4vw;
+  opacity: 0.8;
 }
 .profile__sign-out-btn {
   margin-top: 20px;
+  margin-left: 15px;
 }
 .profile__photo {
-  margin-left: 10%;
   border-radius: 50%;
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-}
-
-@media (max-width: 615px) {
-  .profile__photo {
-  }
 }
 </style>

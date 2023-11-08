@@ -9,6 +9,7 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@twicpics/components": "^0.25.0",
     "core-js": "^3.33.2",
     "firebase": "^10.5.2",
     "pinia": "^2.1.7",

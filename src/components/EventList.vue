@@ -8,7 +8,7 @@ const { events } = useEventsStore();
 <template>
   <div class="event-list">
     <h1 class="event-list__title">Próximos eventos</h1>
-    <div class="event-list__container mx-auto">
+    <div class="event-list__container">
       <EventCard v-for="event in events" :key="event.id" :event="event" />
     </div>
   </div>
@@ -28,5 +28,23 @@ const { events } = useEventsStore();
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 20px;
   padding: 40px 3% 60px 3%;
+}
+@media (max-width: 400px) {
+  .event-list__container {
+    justify-items: left;
+    margin-left: 5%;
+  }
+}
+@media (max-width: 361px) {
+  .event-list__container {
+    justify-items: left;
+    margin-left: 2.5%;
+  }
+}
+@media (max-width: 280px) {
+  .event-list__container {
+    justify-items: left;
+    margin-left: 0;
+  }
 }
 </style>

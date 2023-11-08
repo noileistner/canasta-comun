@@ -44,7 +44,7 @@ const signInWithGoogle = () => {
 <template>
   <v-container class="signIn-input">
     <v-card class="mx-auto pa-12 pb-8" max-width="800" elevation="0">
-      <h1>Inicia sesión con una cuenta existente</h1>
+      <h1 class="signIn__title">Inicia sesión con una cuenta existente</h1>
       <v-form fast-fail @submit.prevent>
         <v-text-field v-model="email" label="Email"></v-text-field>
 
@@ -68,3 +68,9 @@ const signInWithGoogle = () => {
     </v-card>
   </v-container>
 </template>
+
+<style scoped>
+.signIn-title {
+  font-family: var(--app-font-family);
+}
+</style>

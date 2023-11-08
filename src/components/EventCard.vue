@@ -38,7 +38,7 @@ const hasImage = computed(() => props.event?.image?.url);
 <style scoped>
 .event-card {
   text-align: left;
-  width: 95%;
+  width: 80%;
 }
 .event-card__organizer {
   color: #48a67c;
@@ -47,5 +47,11 @@ const hasImage = computed(() => props.event?.image?.url);
 .event-card__item {
   padding: 5px;
   padding-left: 16px;
+}
+
+@media (max-width: 340px) {
+  .event-card {
+    width: 65%;
+  }
 }
 </style>

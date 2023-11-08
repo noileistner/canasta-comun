@@ -32,6 +32,10 @@
 <style scoped>
 .home-intro {
   padding-bottom: 50px;
+  /* max-width: 1800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; */
 }
 .home-intro__title {
   font-size: 7vh;

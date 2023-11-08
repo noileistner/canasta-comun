@@ -1,9 +1,9 @@
 <script setup>
-import NavBar from "./components/NavBar.vue";
 import Footer from "./components/AppFooter.vue";
+import NavBar from "./components/NavBar.vue";
 
-import { onMounted } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onMounted } from "vue";
 import { useSessionStore } from "./store/session";
 
 const { setIsLoggedIn } = useSessionStore();

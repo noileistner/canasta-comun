@@ -47,6 +47,11 @@
 <style scoped>
 .negatives {
   width: 70%;
+  max-width: 1200px;
+  display: flex; /* Added flex container */
+  flex-direction: column; /* Stack child elements vertically */
+  align-items: center; /* Center child elements horizontally */
+  margin: 0 auto;
 }
 .negatives__title {
   padding-bottom: 20px;

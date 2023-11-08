@@ -11,9 +11,9 @@ const router = useRouter();
 const { handleSubmit } = useForm({
   validationSchema: {
     name(value) {
-      if (value?.length >= 5) return true;
+      if (value?.length >= 5 && value?.length <= 23) return true;
 
-      return "Nombre tiene que tener un minimo de 5 caracteres";
+      return "Nombre tiene que tener un mínimo de 5 caracteres y un máximo de 23.";
     },
     date(value) {
       if (value?.length) return true;
@@ -25,12 +25,18 @@ const { handleSubmit } = useForm({
 
       return "Ubicacion tiene que ser valida.";
     },
+    description(value) {
+      if (value?.length >= 10 && value?.length <= 250) return true;
+
+      return "Descripción tiene que tener un mínimo de 10 caracteres y un máximo de 250.";
+    },
   },
 });
 
 const name = useField("name");
 const date = useField("date");
 const location = useField("location");
+const description = useField("description");
 const image = ref(null);
 
 const submit = handleSubmit(async (values) => {
@@ -51,13 +57,17 @@ const eventsCollection = collection(db, "events");
  * @param {Object} values
  */
 async function addEvent(values) {
-  const { name, date, location } = values;
+  const { name, date, location, description } = values;
   const organizer = ""; //TODO: fetch organizer from current user
 
   const imageUrl = await uploadImage();
-  const payload = { name, organizer, location, date };
+  const payload = { name, organizer, location, date, description, createdAt: Date.now() };
+
   if (imageUrl) {
-    payload.imageUrl = imageUrl;
+    payload.image = {
+      url: imageUrl,
+      path: imageUrl.replace("https://firebasestorage.googleapis.com", ""),
+    };
   }
 
   error.value = false;
@@ -79,6 +89,7 @@ async function uploadImage() {
   const { app } = useFirebase();
   const storage = getStorage(app);
   const storageReference = storageRef(storage, `event-images/${file.name}`);
+  console.log("storageReference", storageReference);
   const snapshot = await uploadBytes(storageReference, file);
 
   const imageUrl = await getDownloadURL(snapshot.ref);
@@ -126,7 +137,7 @@ function onFileChange() {
     </v-row>
     <v-row>
       <v-col>
-        <h1>Crea un partido</h1>
+        <h1 class="create-event__title">Crea un partido</h1>
 
         <v-form @submit.prevent="submit">
           <v-text-field
@@ -150,6 +161,12 @@ function onFileChange() {
           />
           <!-- TODO: google maps -->
 
+          <v-text-field
+            v-model="description.value.value"
+            :error-messages="description.errorMessage.value"
+            label="Descripción del evento"
+          />
+
           <v-file-input
             v-model="image"
             type="file"
@@ -159,7 +176,7 @@ function onFileChange() {
             @change="onFileChange"
           />
           <v-fade-transition>
-            <v-img v-if="localImageUrl" width="439" :src="localImageUrl" />
+            <v-img class="create-event__image" v-if="localImageUrl" width="500" :src="localImageUrl" cover />
           </v-fade-transition>
 
           <div class="text-right">
@@ -183,6 +200,12 @@ function onFileChange() {
 <style scoped>
 .create-event {
   width: 70%;
+}
+.create-event__title {
+  font-family: var(--app-font-family);
+}
+.create-event__image {
+  aspect-ratio: 5/3;
 }
 .create-event__btn {
   margin-top: 20px;

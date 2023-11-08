@@ -36,7 +36,7 @@ const signInWithGoogle = () => {
 <template>
   <v-container class="create-account-input">
     <v-card class="mx-auto pa-12 pb-8" max-width="800" elevation="0">
-      <h1>Crea una cuenta</h1>
+      <h1 class="create-account__title">Crea una cuenta</h1>
       <v-form fast-fail @submit.prevent>
         <v-text-field v-model="userName" label="Nombre"></v-text-field>
 
@@ -62,3 +62,9 @@ const signInWithGoogle = () => {
     </v-card>
   </v-container>
 </template>
+
+<style scoped>
+.create-account__title {
+  font-family: var(--app-font-family);
+}
+</style>
