@@ -13,20 +13,20 @@ const hasImage = computed(() => props.event?.image?.url);
 
 <template>
   <v-card class="event-card">
-    <v-img v-if="hasImage" class="event-card__image" cover width="100%" :src="event.image.url" />
+    <TwicImg v-if="hasImage" class="event-card__image" :src="event.image.path" />
     <v-card-title>{{ event.name }}</v-card-title>
 
-    <v-card-text
-      >Organizado por
-      <router-link class="event-card__organizer" to="/">{{ event.organizer.name }}</router-link></v-card-text
-    >
+    <v-card-text>
+      Organizado por
+      <router-link class="event-card__organizer" :to="{ name: 'ProfilePage', params: { id: event.organizer.id } }">
+        <!-- TODO: add link to user's profile -->
+        {{ event.organizer.name }}
+      </router-link>
+    </v-card-text>
 
     <v-card-text class="event-card__item">{{ event.date }}</v-card-text>
 
-    <v-card-text class="event-card__item"
-      >{{ event.location.country }}, {{ event.location.city }},{{ event.location.street }},
-      {{ event.location.venue.name }}</v-card-text
-    >
+    <v-card-text class="event-card__item">{{ event.location }}</v-card-text>
 
     <v-card-actions>
       <v-spacer />

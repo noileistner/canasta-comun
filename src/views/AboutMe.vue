@@ -4,8 +4,14 @@
   <v-container style="margin-left: 0px; margin-right: 0px">
     <v-row cols="12" class="about-me">
       <v-col cols="2">
-        Table of contents
-        <!-- <ul v-for="heading in headings"></ul> -->
+        <div class="d-none d-sm-flex">
+          Table of contents
+          <!-- <ul v-for="heading in headings"></ul> -->
+        </div>
+
+        <v-app-bar-nav-icon class="d-sm-none">
+          <i class="fa-solid fa-bars"></i>
+        </v-app-bar-nav-icon>
       </v-col>
 
       <v-col cols="10" class="about-me__content">
@@ -37,7 +43,6 @@
 
 <style scoped>
 .about-me__content__title {
-  font-size: 5vh;
   font-family: var(--app-font-family);
   display: flex;
   justify-content: center;
@@ -47,5 +52,14 @@
   padding: 15px 0;
 }
 .about-me__content__text {
+  font-size: 2vh;
+}
+@media (max-width: 600px) {
+  .about-me__content__title {
+    font-size: 3vh;
+  }
+  .about-me__content__subtitle {
+    font-size: 2.5vh;
+  }
 }
 </style>

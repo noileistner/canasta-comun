@@ -1,9 +1,9 @@
 <script setup>
-import NavbarSearchBox from "./NavbarSearchBox.vue";
-import { useSessionStore } from "../store/session";
 import { storeToRefs } from "pinia";
+import { useSessionStore } from "../store/session";
+import NavbarSearchBox from "./NavbarSearchBox.vue";
 
-const { isLoggedIn } = storeToRefs(useSessionStore());
+const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
 </script>
 
 <template>
@@ -17,15 +17,15 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
     <div class="d-none d-sm-flex">
       <NavbarSearchBox />
 
-      <router-link to="/crear-partido" v-if="isLoggedIn">
+      <router-link :to="{ name: 'CreateEvent' }" v-if="isLoggedIn">
         <i class="font-icon-plus fa-solid fa-plus fa-lg"></i>
       </router-link>
 
-      <router-link to="/perfil" v-if="isLoggedIn">
+      <router-link :to="{ name: 'ProfilePage', params: { id: currentUser.id } }" v-if="currentUser">
         <i class="font-icon-user fa-solid fa-user"></i>
       </router-link>
 
-      <router-link to="/crear-cuenta" v-if="!isLoggedIn">
+      <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">
         <v-btn class="nav-bar__create-account">Crear cuenta</v-btn>
       </router-link>
     </div>
@@ -80,5 +80,14 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 .nav-bar a.router-link-active,
 .nav-bar a:hover {
   opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .nav-bar a {
+    margin-right: 0;
+  }
+  .nav-bar__logo {
+    font-size: 90%;
+  }
 }
 </style>

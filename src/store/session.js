@@ -1,18 +1,21 @@
-import { ref } from "vue";
 import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
 export const useSessionStore = defineStore("session", () => {
-  const isLoggedIn = ref(false);
+  const currentUser = ref(null);
 
-  function setIsLoggedIn(loggedIn) {
-    isLoggedIn.value = loggedIn;
+  function setCurrentUser(user) {
+    currentUser.value = user;
   }
+
+  const isLoggedIn = computed(() => currentUser.value);
 
   return {
     // state
     isLoggedIn,
+    currentUser,
 
     // actions
-    setIsLoggedIn,
+    setCurrentUser,
   };
 });

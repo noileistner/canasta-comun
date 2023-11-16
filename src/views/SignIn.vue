@@ -43,7 +43,7 @@ const signInWithGoogle = () => {
 
 <template>
   <v-container class="signIn-input">
-    <v-card class="mx-auto pa-12 pb-8" max-width="800" elevation="0">
+    <v-card class="mx-auto pb-8" max-width="800" elevation="0">
       <h1 class="signIn__title">Inicia sesión con una cuenta existente</h1>
       <v-form fast-fail @submit.prevent>
         <v-text-field v-model="email" label="Email"></v-text-field>
@@ -52,25 +52,44 @@ const signInWithGoogle = () => {
           v-model="password"
           label="Contraseña"
           type="password"
+          :rules="emailRules"
           hint="Introduzca su contraseña para acceder"
         />
         <p v-if="errMsg">{{ errMsg }}</p>
 
-        <v-btn @click="register" type="submit" block class="mt-2" color="tertiary" rounded>Someter</v-btn>
+        <v-btn @click="register" type="submit" block class="mt-2" color="tertiary" rounded>
+          <p class="signIn__btn">Continuar</p>
+        </v-btn>
         <v-btn @click="signInWithGoogle" type="submit" block class="mt-2" color="secondary" rounded>
-          Iniciar sesión con Google
+          <p class="signIn__btn">Iniciar sesión con Google</p>
         </v-btn>
       </v-form>
       <v-card-text class="text-center">
         Aun no tienes cuenta?
-        <router-link :to="{ name: 'CreateAccount' }" color="secondary"> Crear cuenta </router-link>
+        <router-link :to="{ name: 'CreateAccount' }" style="color: #48a67c"> Crear cuenta </router-link>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <style scoped>
-.signIn-title {
+.signIn-input {
+  width: 70%;
+}
+.signIn__title {
   font-family: var(--app-font-family);
+}
+.signIn__btn {
+  font-size: 1.8vh;
+}
+
+@media (max-width: 600px) {
+  .signIn-input {
+    width: 90%;
+    padding: 0;
+  }
+  .signIn__title {
+    font-size: 3vh;
+  }
 }
 </style>

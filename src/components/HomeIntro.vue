@@ -11,14 +11,14 @@
           antes.
         </p>
 
-        <router-link to="/crear-cuenta">
-          <v-btn class="home-intro__button" rounded color="secondary" margin-bottom="10px" size="large"
-            >Crear cuenta</v-btn
-          >
+        <router-link :to="{ name: 'CreateEvent' }">
+          <v-btn class="home-intro__button" rounded color="secondary" size="large">Organiza un partido</v-btn>
         </router-link>
 
-        <router-link to="/iniciar-sesion">
-          <v-btn class="home-intro__button" rounded color="tertiary" size="large">Iniciar sesión</v-btn>
+        <router-link :to="{ name: 'CreateAccount' }">
+          <v-btn class="home-intro__button" rounded color="tertiary" margin-bottom="10px" size="large">
+            Crear cuenta</v-btn
+          >
         </router-link>
       </v-col>
 

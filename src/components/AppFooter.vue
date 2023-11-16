@@ -1,16 +1,21 @@
 <script setup>
-import { useSessionStore } from "../store/session";
 import { storeToRefs } from "pinia";
+import { useSessionStore } from "../store/session";
 
 const { isLoggedIn } = storeToRefs(useSessionStore());
 </script>
 
 <template>
   <div class="footer">
-    <router-link to="/contactanos">Contactanos</router-link>
-    <router-link to="/sobre"> Sobre </router-link>
-    <router-link to="/crear-cuenta" v-if="!isLoggedIn">Crear cuenta</router-link>
-    <router-link to="/blog">Blog</router-link>
+    <router-link :to="{ name: 'ContactUs' }">
+      <p class="footer__word">Contáctanos</p>
+    </router-link>
+    <router-link :to="{ name: 'AboutMe' }">
+      <p class="footer__word">Sobre</p>
+    </router-link>
+    <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">
+      <p class="footer__word">Crear cuenta</p>
+    </router-link>
   </div>
 </template>
 
@@ -25,6 +30,10 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   justify-content: center;
   border-top: 7px solid rgb(var(--v-theme-secondary));
   z-index: 2;
+}
+
+.footer__word {
+  font-size: 2vh;
 }
 
 .footer a {

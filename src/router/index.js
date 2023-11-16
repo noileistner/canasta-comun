@@ -2,22 +2,16 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 
 import AboutMe from "../views/AboutMe.vue";
-import BasketNegatives from "../views/BasketNegatives.vue";
 import ContactUs from "../views/ContactUs.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import CreateEvent from "../views/CreateEvent.vue";
+import EditProfile from "../views/EditProfile.vue";
 import EventDetails from "../views/EventDetails.vue";
 import HomePage from "../views/HomePage.vue";
 import ProfilePage from "../views/ProfilePage.vue";
 import SignIn from "../views/SignIn.vue";
 
-const routes = [
-  { path: "/", name: "HomePage", component: HomePage },
-  {
-    path: "/sobre",
-    name: "AboutMe",
-    component: AboutMe,
-  },
+const eventRoutes = [
   {
     path: "/crear-partido",
     name: "CreateEvent",
@@ -27,37 +21,63 @@ const routes = [
     },
   },
   {
-    path: "/contactanos",
-    name: "ContactUs",
-    component: ContactUs,
+    path: "/eventos/:id",
+    name: "EventDetails",
+    component: EventDetails,
+  },
+];
+
+const accountRoutes = [
+  {
+    path: "/perfil-editar",
+    name: "EditProfile",
+    component: EditProfile,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/crear-cuenta",
     name: "CreateAccount",
     component: CreateAccount,
   },
+];
+
+const userRoutes = [
   {
-    path: "/iniciar-sesion",
-    name: "SignIn",
-    component: SignIn,
-  },
-  {
-    path: "/perfil",
+    path: "/usuarios/:id",
     name: "ProfilePage",
     component: ProfilePage,
     meta: {
       requiresAuth: true,
     },
   },
+];
+
+const sessionRoutes = [
   {
-    path: "/blog",
-    name: "BasketNegatives",
-    component: BasketNegatives,
+    path: "/iniciar-sesion",
+    name: "SignIn",
+    component: SignIn,
+  },
+];
+
+const routes = [
+  ...eventRoutes,
+  ...accountRoutes,
+  ...userRoutes,
+  ...sessionRoutes,
+
+  { path: "/", name: "HomePage", component: HomePage },
+  {
+    path: "/sobre",
+    name: "AboutMe",
+    component: AboutMe,
   },
   {
-    path: "/detalles-evento/:id",
-    name: "EventDetails",
-    component: EventDetails,
+    path: "/contactanos",
+    name: "ContactUs",
+    component: ContactUs,
   },
 ];
 

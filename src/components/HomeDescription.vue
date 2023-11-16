@@ -12,7 +12,8 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
           <p class="home-description__text">Busca amigos con intereses comunes</p>
 
           <p class="home-description__sub-text">Crea nuevas amistades</p>
-          <router-link to="/">
+          <router-link :to="{ name: 'CreateAccount' }">
+            <!-- TODO: make link go somewhere -->
             <p class="home-description__cta">Descubre otros aficionados</p>
           </router-link>
         </HomeDescriptionBox>
@@ -22,7 +23,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
           <p class="home-description__text">Organiza y juega partidos de basquet</p>
 
           <p class="home-description__sub-text">Prueba tus habilidades y diviértete</p>
-          <router-link to="/crear-partido">
+          <router-link :to="{ name: 'CreateEvent' }">
             <p class="home-description__cta">Organiza un partido</p>
           </router-link>
         </HomeDescriptionBox>

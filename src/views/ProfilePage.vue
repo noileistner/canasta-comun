@@ -3,7 +3,27 @@ import ContentContainer from "@/components/ContentContainer.vue";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 
+import { useUserStore } from "@/store/user";
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+
+const { find: findUser } = useUserStore();
 const router = useRouter();
+const route = useRoute();
+const id = computed(() => route.params.id);
+const user = ref(null);
+
+async function loadUser() {
+  if (id.value) {
+    user.value = await findUser(id.value);
+  }
+}
+
+onMounted(async () => {
+  loadUser();
+});
+
+// sign out
 
 function handleSignOut() {
   const auth = getAuth();
@@ -19,64 +39,86 @@ function handleSignOut() {
 </script>
 
 <template>
-  <ContentContainer class="profile">
-    <v-card min-width="350" variant="flat">
-      <v-card-title class="profile__user-name">Nói Leistner</v-card-title>
-      <v-card-text>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis laborum assumenda voluptate molestiae libero nam
-        rem perferendis magnam nihil eius voluptates beatae, odio doloremque et dolorum repellendus harum fugiat
-        tenetur?
-      </v-card-text>
-      <v-card-text class="profile__details profile__all"
-        ><v-icon class="fa-solid fa-cake-candles" color="secondary" /> 17</v-card-text
-      >
-      <v-card-text class="profile__details profile__all"
-        ><v-icon class="fa-solid fa-location-dot" color="secondary" /> Sitges, España</v-card-text
-      >
-      <v-btn class="profile__sign-out-btn" rounded color="secondary" @click="handleSignOut">Cerrar sesión</v-btn>
-    </v-card>
+  <v-fade-transition>
+    <ContentContainer v-if="user" class="profile">
+      <v-card variant="flat" min-width="300">
+        <v-card-title class="profile__user-name">{{ user.name }}</v-card-title>
 
-    <template #image>
-      <v-card variant="flat" min-width="350">
-        <v-img
-          src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/A-Alamy-BXWK5E_vvmkuf.jpg"
-          alt="Foto de Perfil"
-          class="profile__photo"
-          width="350"
-          height="350"
-          cover
-        />
-        <!-- <TwicImg
-          class="profile__photo"
-          src="o/event-images%2FIMG_7999.jpg?alt=media&token=540b00bf-ade8-4016-a290-04e146d27961"
-          width="350px"
-          height="350px"
-        /> -->
+        <v-card-text class="profile__description">
+          {{ user.description }}
+        </v-card-text>
+
+        <v-card-text class="profile__details profile__all">
+          <v-icon class="fa-solid fa-cake-candles" color="secondary" />{{ user.birthday }}</v-card-text
+        >
+
+        <v-card-text class="profile__details profile__all" v-if="user.location"
+          ><v-icon class="fa-solid fa-location-dot" color="secondary" />{{ user.location }}</v-card-text
+        >
+
+        <router-link to="/perfil-editar">
+          <v-btn class="profile__btn" rounded color="secondary">Editar perfil</v-btn>
+        </router-link>
+
+        <v-btn class="profile__btn" rounded color="tertiary" @click="handleSignOut">Cerrar sesión</v-btn>
       </v-card>
-    </template>
-  </ContentContainer>
+
+      <template #image>
+        <v-card variant="flat" min-width="180">
+          <TwicImg v-if="user.image" class="profile__photo" alt="Foto de Perfil" :src="user.image.path" width="350" />
+          <div v-else>this is da placeholder</div>
+        </v-card>
+      </template>
+    </ContentContainer>
+
+    <v-container v-else class="profile__loading">
+      <v-progress-circular indeterminate />
+    </v-container>
+  </v-fade-transition>
 </template>
 
 <style scoped>
+.profile {
+  margin-bottom: 195px;
+}
 .profile__user-name {
   font-family: var(--app-font-family);
-  font-size: 3.5vw;
+  font-size: 6vh;
   padding-top: 8px;
   padding-bottom: 20px;
 }
 .profile__all {
-  padding-bottom: 20px;
+  padding-bottom: 3%;
   padding-top: 0;
 }
 .profile__details {
-  font-size: 1.4vw;
+  font-size: 2vh;
   opacity: 0.8;
 }
-.profile__sign-out-btn {
+.profile__btn {
   margin-top: 20px;
   margin-left: 15px;
+  margin-bottom: 20px;
 }
 .profile__photo {
   border-radius: 50%;
+}
+.profile__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+}
+
+@media (max-width: 310px) {
+  .profile__photo {
+    width: 50%;
+  }
+}
+
+@media (max-width: 1175px) {
+  .profile__photo {
+    width: 90%;
+  }
 }
 </style>

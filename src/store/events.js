@@ -1,47 +1,50 @@
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { faker } from "@faker-js/faker";
+import { useFirebase } from "../composables/useFirebase";
 
-function createEvent() {
-  return {
-    id: faker.string.uuid(),
-    name: faker.lorem.words(),
-    image: {
-      url: "https://images.sidearmdev.com/crop?url=https%3a%2f%2fdxbhsrqyrr690.cloudfront.net%2fsidearm.nextgen.sites%2ffvsusports.com%2fimages%2f2023%2f3%2f27%2fMulti-Format_Announcement_-_Landscape_Panel.jpg&height=1080&width=1920&type=jpeg&gravity=smart",
-    },
-    organizer: {
-      name: faker.person.fullName(),
-    },
-    date: faker.date.future(),
-    location: {
-      country: faker.location.country(),
-      city: faker.location.city(),
-      street: faker.location.streetAddress(),
-      venue: {
-        name: faker.company.buzzNoun(),
-      },
-    },
-  };
-}
-
-function loadEvents() {
-  const events = [];
-  const amount = faker.number.int({ min: 1, max: 6 });
-
-  for (let i = 0; i < amount; i++) {
-    events.push(createEvent());
-  }
-
-  return events;
+function getCollection() {
+  const { db } = useFirebase();
+  return collection(db, "events");
 }
 
 export const useEventsStore = defineStore("events", () => {
   const events = ref([]);
 
-  // TODO: implement firebase
-  events.value = loadEvents();
+  async function loadAll() {
+    const querySnapshot = await getDocs(getCollection());
+    events.value = querySnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+  }
+
+  async function create(attributes) {
+    const { name, date, time, location, description, imageUrl, organizer = "" } = attributes;
+    const payload = { name, organizer, location, date, time, description, createdAt: Date.now() };
+
+    if (imageUrl) {
+      payload.image = {
+        url: imageUrl,
+        path: imageUrl.replace("https://firebasestorage.googleapis.com", ""),
+      };
+    }
+
+    const event = await addDoc(getCollection(), payload);
+    events.value.push(event);
+    return event;
+  }
+
+  // async function findById(id) {}
 
   return {
+    // state
     events,
+
+    // actions
+    loadAll,
+    create,
   };
 });

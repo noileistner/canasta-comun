@@ -1,15 +1,26 @@
 <script setup>
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useEventsStore } from "../store/events";
 import EventCard from "./EventCard.vue";
 
-const { events } = useEventsStore();
+const { events } = storeToRefs(useEventsStore());
+const { loadAll } = useEventsStore();
+const router = useRouter();
+
+function navigateToDetail(eventId) {
+  router.push({ name: "EventDetails", params: { id: eventId } });
+}
+
+onMounted(() => loadAll());
 </script>
 
 <template>
   <div class="event-list">
     <h1 class="event-list__title">Próximos eventos</h1>
     <div class="event-list__container">
-      <EventCard v-for="event in events" :key="event.id" :event="event" />
+      <EventCard v-for="event in events" :key="event.id" :event="event" @click="navigateToDetail(event.id)" />
     </div>
   </div>
 </template>
