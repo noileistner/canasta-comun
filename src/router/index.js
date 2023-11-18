@@ -5,6 +5,7 @@ import AboutMe from "../views/AboutMe.vue";
 import ContactUs from "../views/ContactUs.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import CreateEvent from "../views/CreateEvent.vue";
+import EditEvent from "../views/EditEvent.vue";
 import EditProfile from "../views/EditProfile.vue";
 import EventDetails from "../views/EventDetails.vue";
 import HomePage from "../views/HomePage.vue";
@@ -24,6 +25,14 @@ const eventRoutes = [
     path: "/eventos/:id",
     name: "EventDetails",
     component: EventDetails,
+  },
+  {
+    path: "/eventos/:id/editar",
+    name: "EditEvent",
+    component: EditEvent,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 

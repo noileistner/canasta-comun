@@ -9,9 +9,9 @@ const router = useRouter();
 const { handleSubmit } = useForm({
   validationSchema: {
     name(value) {
-      if (value?.length >= 5 && value?.length <= 23) return true;
+      if (value?.length >= 3 && value?.length <= 23) return true;
 
-      return "Nombre tiene que tener un mínimo de 5 caracteres y un máximo de 23.";
+      return "Nombre tiene que tener un mínimo de 3 caracteres y un máximo de 23.";
     },
     email(value) {
       if (value?.length) return true;

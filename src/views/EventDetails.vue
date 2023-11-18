@@ -1,30 +1,21 @@
 <script setup>
 import ContentContainer from "@/components/ContentContainer.vue";
-import { doc, getDoc } from "firebase/firestore";
-import { computed, onMounted, ref } from "vue";
+import EventCommentSection from "@/components/EventCommentSection.vue";
+import { useEvents } from "@/composables/useEvents";
+import { useSessionStore } from "@/store/session";
+import { storeToRefs } from "pinia";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { useFirebase } from "../composables/useFirebase";
+
+const { currentUser } = storeToRefs(useSessionStore());
+const { event, loadEvent, addComment } = useEvents();
 
 const route = useRoute();
 const id = computed(() => route.params.id);
-const event = ref(null);
 
-async function loadEvent() {
-  const { db } = useFirebase();
-  const docRef = doc(db, "events", id.value);
-  const docSnap = await getDoc(docRef);
-
-  console.log("load event", id.value);
-
-  if (docSnap.exists()) {
-    event.value = docSnap.data();
-    console.log("Document data:", event.value);
-  }
-}
-
-onMounted(async () => {
+async function load() {
   if (id.value) {
-    await loadEvent();
+    await loadEvent(id.value);
     if (!event.value) {
       //TODO: render error
       window.alert("event not found", id.value);
@@ -33,7 +24,11 @@ onMounted(async () => {
     // TODO: render error 404
     window.alert("no id");
   }
-});
+}
+
+const isOrganizer = computed(() => event.value?.organizer.id === currentUser.value?.id);
+
+onMounted(() => load());
 </script>
 
 <template>
@@ -70,27 +65,21 @@ onMounted(async () => {
           <v-icon class="fa-solid fa-location-dot" color="secondary" />
           {{ event.location }}
         </v-card-text>
-
-        <v-card-actions>
-          <v-btn class="edit-profile__btn" type="submit" size="large" rounded color="secondary" :loading="isSubmitting">
-            Actualizar perfil
-          </v-btn>
-        </v-card-actions>
       </v-card>
 
       <template #image v-if="event.image">
         <v-card variant="flat"> <TwicImg class="event-details__image" :src="event.image.path" /> </v-card>
-
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24002.805396606374!2d1.7828631766955259!3d41.23591868715993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a3804720b208fb%3A0x7061f1fb2907c8f9!2s08870%20Sitges%2C%20Barcelona!5e0!3m2!1sen!2ses!4v1699733544617!5m2!1sen!2ses"
-          width="100%"
-          height="50%"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
       </template>
+
+      <div class="event-details__buttons">
+        <router-link v-if="isOrganizer" :to="{ name: 'EditEvent', params: { id } }">
+          <v-btn class="event-details__btn" rounded color="secondary">Editar partido</v-btn>
+        </router-link>
+
+        <v-btn v-else class="event-details__btn" rounded color="secondary">Únete</v-btn>
+      </div>
+
+      <EventCommentSection :comments="event.comments" @comment:add="addComment" />
     </ContentContainer>
 
     <v-container v-else class="event-details__loading" height="500">
@@ -100,9 +89,9 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.event-details {
+/* .event-details {
   margin-bottom: 100px;
-}
+} */
 .event-details__all {
   padding-bottom: 3%;
   padding-top: 0;
@@ -119,7 +108,7 @@ onMounted(async () => {
   color: #48a67c;
 }
 .event-details__description {
-  /* font-size: 1.8vh; */
+  font-size: 1.8vh;
 }
 .event-details__info {
   font-size: 1.7vh;
@@ -127,6 +116,15 @@ onMounted(async () => {
 }
 .event-details__image {
   aspect-ratio: 5/3;
+  margin-bottom: 30px;
+}
+.event-details__btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.event-details__buttons {
+  display: flex;
+  justify-content: center;
   margin-bottom: 30px;
 }
 .event-details__loading {

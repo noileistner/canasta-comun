@@ -26,7 +26,11 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
       </router-link>
 
       <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">
-        <v-btn class="nav-bar__create-account">Crear cuenta</v-btn>
+        <v-btn class="nav-bar__account">Crear cuenta</v-btn>
+      </router-link>
+
+      <router-link :to="{ name: 'SignIn' }" v-if="!isLoggedIn">
+        <v-btn class="nav-bar__account">Iniciar sesión</v-btn>
       </router-link>
     </div>
 
@@ -67,7 +71,7 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
   padding-top: 15px;
 }
 
-.nav-bar__create-account {
+.nav-bar__account {
   margin-top: 4px;
 }
 

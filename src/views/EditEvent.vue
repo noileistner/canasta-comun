@@ -1,16 +1,19 @@
 <script setup>
+import { useEvents } from "@/composables/useEvents";
+import { useFirebase } from "@/composables/useFirebase";
 import { useEventsStore } from "@/store/events";
-import { useSessionStore } from "@/store/session";
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
-import { storeToRefs } from "pinia";
 import { useField, useForm } from "vee-validate";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useFirebase } from "../composables/useFirebase";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-const { currentUser } = storeToRefs(useSessionStore());
-const { create: createEvent } = useEventsStore();
 const router = useRouter();
+
+const route = useRoute();
+const id = computed(() => route.params.id);
+
+const { update: updateEvent } = useEventsStore();
+const { event, loadEvent } = useEvents();
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -37,7 +40,7 @@ const { handleSubmit } = useForm({
     description(value) {
       if (value?.length <= 500) return true;
 
-      return "Ubicación tiene que ser válida.";
+      return "Descripción tiene que tener un mínimo de 10 caracteres y un máximo de 500.";
     },
   },
 });
@@ -51,7 +54,7 @@ const image = ref(null);
 
 const submit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  await addEvent(values);
+  await updateEventDetails(values);
   isSubmitting.value = false;
 });
 
@@ -63,22 +66,33 @@ const error = ref(false);
  *
  * @param {Object} values
  */
-async function addEvent(values) {
+async function updateEventDetails(values) {
   const imageUrl = await uploadImage();
   const attributes = {
-    ...values,
-    imageUrl,
-    organizer: {
-      id: currentUser.value.id,
-      name: currentUser.value.name,
-    },
+    name: values.name,
+    description: values.description ?? "",
+    date: values.date ?? "",
+    time: values.time ?? "",
+    location: values.location ?? "",
   };
+
+  if (imageUrl) {
+    // TODO: extract image upload composable
+    attributes.image = {
+      url: imageUrl,
+      path: imageUrl.replace("https://firebasestorage.googleapis.com", ""),
+    };
+  }
 
   error.value = false;
 
   try {
-    const event = await createEvent(attributes);
-    router.push({ name: "EventDetails", params: { id: event.id } });
+    const updatedEvent = await updateEvent(event.value.id, attributes);
+    // FIXME: the line below is a hack to update the current user values,
+    // find a better way to re-fetch the current user profile
+    Object.assign(event.value, updatedEvent);
+    // END FIXME
+    router.push({ name: "EventDetails", params: { id: event.value.id } });
   } catch (e) {
     error.value = true;
     console.error(e);
@@ -86,6 +100,10 @@ async function addEvent(values) {
 }
 
 async function uploadImage() {
+  if (!image.value) {
+    return;
+  }
+
   const [file] = image.value;
   if (!file) {
     return;
@@ -93,7 +111,6 @@ async function uploadImage() {
   const { app } = useFirebase();
   const storage = getStorage(app);
   const storageReference = storageRef(storage, `event-images/${file.name}`);
-  console.log("storageReference", storageReference);
   const snapshot = await uploadBytes(storageReference, file);
 
   const imageUrl = await getDownloadURL(snapshot.ref);
@@ -122,13 +139,46 @@ function onFileChange() {
 
   createImage(file);
 }
+
+function setDefaultValues() {
+  if (!event.value) {
+    return;
+  }
+
+  const attributes = event.value;
+
+  name.value.value = attributes.name;
+  description.value.value = attributes.description;
+  date.value.value = attributes.date;
+  time.value.value = attributes.time;
+  location.value.value = attributes.location;
+}
+
+async function load() {
+  if (id.value) {
+    await loadEvent(id.value);
+    if (!event.value) {
+      //TODO: render error
+      window.alert("event not found", id.value);
+    }
+  } else {
+    // TODO: render error 404
+    window.alert("no id");
+  }
+}
+
+watch(event, () => setDefaultValues(), { deep: true });
+
+onMounted(() => load());
+
+// TODO: make form be submitable without being filled
 </script>
 
 <template>
   <v-container class="create-event">
     <v-row>
       <v-col>
-        <h1 class="create-event__title">Crea un partido</h1>
+        <h1 class="create-event__title">Edita tu partido</h1>
 
         <v-form @submit.prevent="submit">
           <v-text-field
@@ -191,7 +241,7 @@ function onFileChange() {
               color="secondary"
               :loading="isSubmitting"
             >
-              Crear partido
+              Actualizar partido
             </v-btn>
           </div>
         </v-form>

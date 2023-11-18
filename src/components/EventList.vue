@@ -18,7 +18,7 @@ onMounted(() => loadAll());
 
 <template>
   <div class="event-list">
-    <h1 class="event-list__title">Próximos eventos</h1>
+    <h1 class="event-list__title">Descubre partidos próximos</h1>
     <div class="event-list__container">
       <EventCard v-for="event in events" :key="event.id" :event="event" @click="navigateToDetail(event.id)" />
     </div>

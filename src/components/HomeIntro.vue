@@ -1,8 +1,8 @@
 <template>
   <v-container class="home-intro">
     <v-row>
-      <v-col>
-        <h1 class="home-intro__title">Encuentra compañeros de basquet</h1>
+      <v-col cols="8">
+        <h1 class="home-intro__title">Organiza y participa en partidos de basquet</h1>
 
         <p class="home-intro__description">
           Conecta con amantes del baloncesto para organizar partidos emocionantes. Tanto si eres un jugador
@@ -11,6 +11,7 @@
           antes.
         </p>
 
+        <!-- TODO: when click button go to create event after signIn  -->
         <router-link :to="{ name: 'CreateEvent' }">
           <v-btn class="home-intro__button" rounded color="secondary" size="large">Organiza un partido</v-btn>
         </router-link>
@@ -22,7 +23,7 @@
         </router-link>
       </v-col>
 
-      <v-col>
+      <v-col cols="4">
         <v-img class="home-intro__image" src="../images/MainPicture.jpg" alt="foto basquet" height="500" />
       </v-col>
     </v-row>
@@ -38,7 +39,7 @@
   align-items: center; */
 }
 .home-intro__title {
-  font-size: 7vh;
+  font-size: 6.3vh;
   font-family: var(--app-font-family);
   line-height: 110%;
   margin-bottom: 20px;
@@ -52,6 +53,12 @@
   .home-intro__button {
     height: 45px;
     width: 160px;
+  }
+  .home-intro__title {
+    font-size: 7vw;
+  }
+  .home-intro__image {
+    height: 400;
   }
 }
 

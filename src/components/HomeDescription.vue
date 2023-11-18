@@ -20,7 +20,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
       </v-col>
       <v-col>
         <HomeDescriptionBox icon="edit">
-          <p class="home-description__text">Organiza y juega partidos de basquet</p>
+          <p class="home-description__text">Planifica y juega partidos de basquet</p>
 
           <p class="home-description__sub-text">Prueba tus habilidades y diviértete</p>
           <router-link :to="{ name: 'CreateEvent' }">

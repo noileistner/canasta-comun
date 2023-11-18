@@ -1,24 +1,22 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useFirebase } from "../composables/useFirebase";
+import { useFirestore } from "../composables/useFirestore";
 
-function getCollection() {
-  const { db } = useFirebase();
-  return collection(db, "events");
-}
+const { doc, collection, docSnapToModel } = useFirestore("events");
 
 export const useEventsStore = defineStore("events", () => {
   const events = ref([]);
 
   async function loadAll() {
-    const querySnapshot = await getDocs(getCollection());
-    events.value = querySnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
+    const querySnapshot = await getDocs(collection);
+    events.value = querySnapshot.docs.map(docSnapToModel);
+  }
+
+  async function find(id) {
+    const docRef = doc(id);
+    const docSnap = await getDoc(docRef);
+    return docSnapToModel(docSnap);
   }
 
   async function create(attributes) {
@@ -32,12 +30,16 @@ export const useEventsStore = defineStore("events", () => {
       };
     }
 
-    const event = await addDoc(getCollection(), payload);
+    const event = await addDoc(collection, payload);
     events.value.push(event);
     return event;
   }
 
-  // async function findById(id) {}
+  async function update(id, attributes) {
+    const docRef = doc(id);
+    await updateDoc(docRef, { ...attributes, updatedAt: Date.now() });
+    return await find(id);
+  }
 
   return {
     // state
@@ -45,6 +47,8 @@ export const useEventsStore = defineStore("events", () => {
 
     // actions
     loadAll,
+    find,
     create,
+    update,
   };
 });

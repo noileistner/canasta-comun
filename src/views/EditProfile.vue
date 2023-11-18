@@ -19,6 +19,11 @@ const { handleSubmit } = useForm({
 
       return "Nombre tiene que tener un mínimo de 3 caracteres y un máximo de 50.";
     },
+    description(value) {
+      if (value?.length <= 500) return true;
+
+      return "La descripción puede tener un máximo de 500 caracteres.";
+    },
   },
 });
 
@@ -138,20 +143,6 @@ onMounted(() => setDefaultValues());
 <template>
   <v-container class="edit-profile">
     <v-row>
-      <v-col cols="7">
-        <v-alert
-          v-if="error"
-          justify-content="center"
-          density="compact"
-          type="error"
-          variant="tonal"
-          title="Error"
-          text="Ha habido en error, inténtelo de nuevo"
-        ></v-alert>
-      </v-col>
-    </v-row>
-
-    <v-row>
       <v-col>
         <h1 class="edit-profile__title">Edita tu perfil</h1>
 
@@ -207,6 +198,20 @@ onMounted(() => setDefaultValues());
             </v-btn>
           </div>
         </v-form>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="7">
+        <v-alert
+          v-if="error"
+          justify-content="center"
+          density="compact"
+          type="error"
+          variant="tonal"
+          title="Error"
+          text="Ha habido en error, inténtelo de nuevo"
+        ></v-alert>
       </v-col>
     </v-row>
   </v-container>

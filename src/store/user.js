@@ -1,40 +1,21 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { defineStore } from "pinia";
-import { useFirebase } from "../composables/useFirebase";
+import { useFirestore } from "../composables/useFirestore";
 
-const COLLECTION = "users";
-
-function getCollectionRef() {
-  const { db } = useFirebase();
-  return collection(db, COLLECTION);
-}
-
-function getDocRef(id) {
-  const { db } = useFirebase();
-  return doc(db, COLLECTION, id);
-}
-
-function docSnapToUser(docSnap) {
-  if (docSnap?.exists()) {
-    return {
-      id: docSnap.id,
-      ...docSnap.data(),
-    };
-  }
-}
+const { doc, collection, docSnapToModel } = useFirestore("users");
 
 export const useUserStore = defineStore("user", () => {
   async function find(id) {
-    const docRef = getDocRef(id);
+    const docRef = doc(id);
     const docSnap = await getDoc(docRef);
-    return docSnapToUser(docSnap);
+    return docSnapToModel(docSnap);
   }
 
   async function findByEmail(email) {
-    const q = query(getCollectionRef(), where("email", "==", email));
+    const q = query(collection, where("email", "==", email));
     const querySnapshot = await getDocs(q);
     const docSnap = querySnapshot?.docs.at(0);
-    return docSnapToUser(docSnap);
+    return docSnapToModel(docSnap);
   }
 
   async function findOrCreateByEmail(email, attributes = {}) {
@@ -57,14 +38,14 @@ export const useUserStore = defineStore("user", () => {
       };
     }
 
-    const docRef = await addDoc(getCollectionRef(), payload);
+    const docRef = await addDoc(collection, payload);
     if (docRef) {
       return await find(docRef.id);
     }
   }
 
   async function update(id, attributes) {
-    const docRef = getDocRef(id);
+    const docRef = doc(id);
     await updateDoc(docRef, { ...attributes, updatedAt: Date.now() });
     return await find(id);
   }
