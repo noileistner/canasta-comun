@@ -51,17 +51,25 @@ function addComment() {
       <EventComment class="comment" v-for="comment in comments" :key="comment.id" :comment="comment" />
       <v-btn v-if="showToggleShowAllButton" @click="toggleShowAll" variant="text">{{ toggleShowAllButtonLabel }}</v-btn>
     </div>
-    <div v-else>no comments yet</div>
 
-    <hr />
-
-    <v-textarea v-model="newComment" placeholder="Escribe un comentario..." />
-    <v-btn @click="addComment" :disabled="!canCreateNewComment">Add Comment</v-btn>
+    <div class="comment-editor">
+      <v-textarea v-model="newComment" placeholder="Escribe un comentario..." rows="1" auto-grow variant="outlined">
+        <template #append>
+          <v-btn icon @click="addComment" :disabled="!canCreateNewComment">
+            <v-icon icon="fa:fas fa-paper-plane" />
+          </v-btn>
+        </template>
+      </v-textarea>
+    </div>
   </v-container>
 </template>
 
 <style scoped>
-.comments .comment {
+.comments .comment:not(:last-child) {
   margin-bottom: 20px;
+}
+
+.comment-editor {
+  margin-top: 15px;
 }
 </style>
