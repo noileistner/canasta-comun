@@ -15,9 +15,9 @@ const router = useRouter();
 const { handleSubmit } = useForm({
   validationSchema: {
     name(value) {
-      if (value?.length >= 3 && value?.length <= 50) return true;
+      if (value?.length >= 3 && value?.length <= 25) return true;
 
-      return "Nombre tiene que tener un mínimo de 3 caracteres y un máximo de 50.";
+      return "Nombre tiene que tener un mínimo de 3 caracteres y un máximo de 25.";
     },
     description(value) {
       if (value?.length <= 500) return true;
@@ -151,7 +151,7 @@ onMounted(() => setDefaultValues());
             v-model="name.value.value"
             :error-messages="name.errorMessage.value"
             label="Nombre"
-            maxlength="50"
+            maxlength="25"
           />
 
           <v-textarea

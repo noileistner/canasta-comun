@@ -40,7 +40,7 @@ const { handleSubmit } = useForm({
     description(value) {
       if (value?.length <= 500) return true;
 
-      return "Descripción tiene que tener un mínimo de 10 caracteres y un máximo de 500.";
+      return "Descripción puede tener un máximo de 500.";
     },
   },
 });

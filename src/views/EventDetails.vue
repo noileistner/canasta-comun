@@ -1,17 +1,19 @@
 <script setup>
 import ContentContainer from "@/components/ContentContainer.vue";
 import EventCommentSection from "@/components/EventCommentSection.vue";
+import EventParticipantsSection from "@/components/EventParticipantsSection.vue";
 import { useEvents } from "@/composables/useEvents";
-import { useSessionStore } from "@/store/session";
-import { storeToRefs } from "pinia";
+import { ref } from "vue";
+
 import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-const { currentUser } = storeToRefs(useSessionStore());
-const { event, loadEvent, addComment } = useEvents();
+const { event, loadEvent, addComment, toggleParticipation, isOrganizer, isParticipant, canParticipate } = useEvents();
 
 const route = useRoute();
 const id = computed(() => route.params.id);
+const isSubmitting = ref(false);
+const error = ref(null);
 
 async function load() {
   if (id.value) {
@@ -26,7 +28,20 @@ async function load() {
   }
 }
 
-const isOrganizer = computed(() => event.value?.organizer.id === currentUser.value?.id);
+const toggleParticipationButtonLabel = computed(() => (isParticipant.value ? "Cancelar" : "Participar"));
+
+async function toggleEventParticipation() {
+  try {
+    isSubmitting.value = true;
+    error.value = null;
+
+    await toggleParticipation();
+  } catch (e) {
+    error.value = "An error occured, please try again later.";
+  } finally {
+    isSubmitting.value = false;
+  }
+}
 
 onMounted(() => load());
 </script>
@@ -34,6 +49,8 @@ onMounted(() => load());
 <template>
   <v-fade-transition>
     <ContentContainer v-if="event" class="event-details">
+      <v-alert v-if="error" :text="error" type="error" />
+
       <v-card min-width="210" variant="flat" max-width="100%">
         <v-card-title class="event-details__title event-details__all">{{ event.name }}</v-card-title>
 
@@ -67,19 +84,37 @@ onMounted(() => load());
         </v-card-text>
       </v-card>
 
-      <template #image v-if="event.image">
-        <v-card variant="flat"> <TwicImg class="event-details__image" :src="event.image.path" /> </v-card>
+      <template #image>
+        <v-card variant="flat" min-width="300">
+          <TwicImg v-if="event.image" class="event-details__image" :src="event.image.path" />
+          <div v-else>this is da placeholder</div>
+        </v-card>
       </template>
 
-      <div class="event-details__buttons">
+      <template #buttons>
         <router-link v-if="isOrganizer" :to="{ name: 'EditEvent', params: { id } }">
           <v-btn class="event-details__btn" rounded color="secondary">Editar partido</v-btn>
         </router-link>
 
-        <v-btn v-else class="event-details__btn" rounded color="secondary">Únete</v-btn>
-      </div>
+        <v-btn
+          v-else-if="canParticipate"
+          class="event-details__btn"
+          rounded
+          color="secondary"
+          @click="toggleEventParticipation"
+          :loading="isSubmitting"
+        >
+          {{ toggleParticipationButtonLabel }}
+        </v-btn>
+      </template>
 
-      <EventCommentSection :comments="event.comments" @comment:add="addComment" />
+      <template #participants>
+        <EventParticipantsSection :participants="event.participants" />
+      </template>
+
+      <template #comments>
+        <EventCommentSection :comments="event.comments" @comment:add="addComment" />
+      </template>
     </ContentContainer>
 
     <v-container v-else class="event-details__loading" height="500">
@@ -89,9 +124,6 @@ onMounted(() => load());
 </template>
 
 <style scoped>
-/* .event-details {
-  margin-bottom: 100px;
-} */
 .event-details__all {
   padding-bottom: 3%;
   padding-top: 0;
@@ -121,11 +153,6 @@ onMounted(() => load());
 .event-details__btn {
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.event-details__buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
 }
 .event-details__loading {
   display: flex;

@@ -11,6 +11,26 @@
         <slot name="image" />
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col cols="12" class="content__buttons content-column">
+        <slot name="buttons" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" class="content-column">
+        <slot name="participants" />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" class="content__comments content-column">
+        <slot name="comments" />
+      </v-col>
+    </v-row>
+
+    <slot name="foo" />
   </div>
 </template>
 
@@ -24,6 +44,14 @@
 }
 .content-container__image {
   padding: 0;
+}
+.content__buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 37px;
+}
+.content__comments {
+  width: 60%;
 }
 
 @media (max-width: 755px) {

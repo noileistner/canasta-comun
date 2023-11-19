@@ -1,12 +1,18 @@
 import { useEventsStore } from "@/store/events";
 import { useSessionStore } from "@/store/session";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 export function useEvents() {
   const { currentUser } = storeToRefs(useSessionStore());
   const { find, update } = useEventsStore();
   const event = ref(null);
+
+  const isOrganizer = computed(() => event.value?.organizer.id === currentUser.value?.id);
+
+  const isParticipant = computed(() => event.value?.participants?.find(({ id }) => id === currentUser.value?.id));
+
+  const canParticipate = computed(() => !isOrganizer.value && currentUser.value);
 
   async function loadEvent(id) {
     event.value = await find(id);
@@ -37,9 +43,27 @@ export function useEvents() {
     });
   }
 
+  async function toggleParticipation() {
+    const participant = { id: currentUser.value.id, name: currentUser.value.name };
+    const participants = event.value.participants?.filter(({ id }) => id !== participant.id) ?? [];
+
+    if (!isParticipant.value) {
+      participants.push(participant);
+    }
+
+    event.value = await update(event.value.id, {
+      participants,
+    });
+  }
+
   return {
-    loadEvent,
     event,
+    isOrganizer,
+    isParticipant,
+    canParticipate,
+
+    loadEvent,
     addComment,
+    toggleParticipation,
   };
 }

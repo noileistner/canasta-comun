@@ -8,12 +8,12 @@ import { useSessionStore } from "./store/session";
 import { useUserStore } from "./store/user";
 
 const { setCurrentUser } = useSessionStore();
-const { findOrCreateByEmail } = useUserStore();
+const { findByEmail } = useUserStore();
 
 async function handleAuthStateChanged(session) {
   // if there is a session the user has authenticated
   if (session) {
-    const user = await findOrCreateByEmail(session.email, { name: session.displayName });
+    const user = await findByEmail(session.email);
     setCurrentUser(user);
   }
   // otherwise user has signed out
