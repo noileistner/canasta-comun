@@ -28,7 +28,7 @@ async function load() {
   }
 }
 
-const toggleParticipationButtonLabel = computed(() => (isParticipant.value ? "Cancelar" : "Participar"));
+const toggleParticipationButtonLabel = computed(() => (isParticipant.value ? "Dejar de participar" : "Participar"));
 
 async function toggleEventParticipation() {
   try {
@@ -93,7 +93,7 @@ onMounted(() => load());
 
       <template #buttons>
         <router-link v-if="isOrganizer" :to="{ name: 'EditEvent', params: { id } }">
-          <v-btn class="event-details__btn" rounded color="secondary">Editar partido</v-btn>
+          <v-btn class="event-details__btn" size="large" rounded color="secondary">Editar partido</v-btn>
         </router-link>
 
         <v-btn
@@ -103,6 +103,7 @@ onMounted(() => load());
           color="secondary"
           @click="toggleEventParticipation"
           :loading="isSubmitting"
+          size="large"
         >
           {{ toggleParticipationButtonLabel }}
         </v-btn>
@@ -130,20 +131,20 @@ onMounted(() => load());
 }
 .event-details__title {
   font-family: var(--app-font-family);
-  font-size: 6vh;
+  /* font-size: 6vh; */
   padding-top: 10px;
 }
 .event-details__organizer {
-  font-size: 1.6vh;
+  /* font-size: 1.6vh; */
 }
 .event-details__organizer-user {
   color: #48a67c;
 }
 .event-details__description {
-  font-size: 1.8vh;
+  /* font-size: 1.8vh; */
 }
 .event-details__info {
-  font-size: 1.7vh;
+  /* font-size: 1.7vh; */
   opacity: 0.8;
 }
 .event-details__image {

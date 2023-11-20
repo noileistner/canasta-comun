@@ -28,14 +28,7 @@ export function useEvents() {
     };
 
     if (currentUser.value) {
-      const { id, name, image } = currentUser.value;
-      comment.author = {
-        id,
-        name,
-      };
-      if (image) {
-        comment.author.image = image;
-      }
+      comment.author = currentUser.value.toJSON();
     }
 
     event.value = await update(event.value.id, {
@@ -44,7 +37,7 @@ export function useEvents() {
   }
 
   async function toggleParticipation() {
-    const participant = { id: currentUser.value.id, name: currentUser.value.name };
+    const participant = currentUser.value.toJSON();
     const participants = event.value.participants?.filter(({ id }) => id !== participant.id) ?? [];
 
     if (!isParticipant.value) {

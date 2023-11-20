@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import UserAvatar from "./UserAvatar.vue";
 
 const props = defineProps({
   participant: {
@@ -8,21 +8,33 @@ const props = defineProps({
   },
 });
 
-const joinedAt = computed(() => {
-  if (!props.participant.createdAt) {
-    return;
-  }
-  return new Date(props.participant.createdAt).toLocaleString();
-});
+// const joinedAt = computed(() => {
+//   if (!props.participant.createdAt) {
+//     return;
+//   }
+//   return new Date(props.participant.createdAt).toLocaleString();
+// });
 </script>
 
 <template>
-  <v-card :title="participant.name" :subtitle="joinedAt">
-    <template #prepend>
-      <v-avatar color="secondary">
-        <TwicImg v-if="participant.image" :src="participant.image.path" />
-        <v-icon v-else icon="fa:fas fa-user-astronaut" />
-      </v-avatar>
-    </template>
-  </v-card>
+  <router-link :to="{ name: 'ProfilePage', params: { id: participant.id } }">
+    <v-card class="event-participant text-center">
+      <UserAvatar :user="participant" color="grey" size="80px" />
+
+      <v-card-title>
+        {{ participant.name }}
+      </v-card-title>
+    </v-card>
+  </router-link>
 </template>
+
+<style scoped>
+.event-participant {
+  width: 200px;
+  margin-top: 20px;
+  padding-top: 12px;
+}
+.event-participant__avatar {
+  margin-top: 12px;
+}
+</style>

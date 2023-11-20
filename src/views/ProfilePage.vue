@@ -77,6 +77,8 @@ function handleSignOut() {
         </router-link>
 
         <v-btn class="profile__btn" rounded color="tertiary" @click="handleSignOut">Cerrar sesión</v-btn>
+
+        <v-btn class="profile__btn" rounded color="secondary" @click="follow">Seguir</v-btn>
       </template>
     </ContentContainer>
 

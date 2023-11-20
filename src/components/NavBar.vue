@@ -34,9 +34,17 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
       </router-link>
     </div>
 
-    <v-app-bar-nav-icon class="d-sm-none">
-      <i class="fa-solid fa-bars"></i>
-    </v-app-bar-nav-icon>
+    <div class="d-sm-none">
+      <v-menu>
+        <template #activator="{ props }">
+          <v-icon tag="v-btn" v-bind="props" icon="fa:fas fa-bars"></v-icon>
+        </template>
+
+        <v-list>
+          <v-list-item>hello</v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
   </v-toolbar>
 </template>
 
@@ -86,7 +94,7 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
   opacity: 1;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 599px) {
   .nav-bar a {
     margin-right: 0;
   }

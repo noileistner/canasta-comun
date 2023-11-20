@@ -1,23 +1,3 @@
-<template>
-  <div class="searchbox">
-    <v-responsive class="ma-0 pa-0" width="150px">
-      <v-text-field
-        v-model="searchInput"
-        flat
-        density="compact"
-        variant="solo"
-        hide-details
-        single-line
-        rounded
-        placeholder="busca"
-        append-inner-icon="fa:fas fa-search"
-        @keydown.enter="onSearchKeyDown"
-        @click:append-inner="onSearchClick"
-      />
-    </v-responsive>
-  </div>
-</template>
-
 <script setup>
 import { ref } from "vue";
 
@@ -36,8 +16,28 @@ function search() {
 }
 </script>
 
+<template>
+  <div class="searchbox">
+    <v-responsive class="ma-0 pa-0" width="200px">
+      <v-text-field
+        v-model="searchInput"
+        flat
+        density="compact"
+        variant="solo"
+        hide-details
+        single-line
+        rounded
+        placeholder="busca"
+        append-inner-icon="fa:fas fa-search"
+        @keydown.enter="onSearchKeyDown"
+        @click:append-inner="onSearchClick"
+      />
+    </v-responsive>
+  </div>
+</template>
+
 <style scoped>
 .searchbox {
-  margin-right: 30px;
+  margin-right: 40px;
 }
 </style>

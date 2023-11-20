@@ -28,7 +28,7 @@ const hasComments = computed(() => count.value > 0);
 
 const showToggleShowAllButton = computed(() => props.comments?.length > DEFAULT_COMMENTS_LIST_SIZE);
 const toggleShowAllButtonLabel = computed(() => {
-  return `Show ${showAll.value ? "less" : "all"}`;
+  return `Enseña ${showAll.value ? "menos" : "todo"}`;
 });
 
 function toggleShowAll() {
@@ -46,10 +46,12 @@ function addComment() {
 
 <template>
   <v-container>
-    <h3>Comments ({{ count }})</h3>
+    <h3>Comentarios ({{ count }})</h3>
     <div v-if="hasComments" class="comments">
       <EventComment class="comment" v-for="comment in comments" :key="comment.id" :comment="comment" />
-      <v-btn v-if="showToggleShowAllButton" @click="toggleShowAll" variant="text">{{ toggleShowAllButtonLabel }}</v-btn>
+      <v-btn v-if="showToggleShowAllButton" @click="toggleShowAll" variant="text" color="secondary">{{
+        toggleShowAllButtonLabel
+      }}</v-btn>
     </div>
 
     <div class="comment-editor">
@@ -67,6 +69,11 @@ function addComment() {
 <style scoped>
 .comments .comment:not(:last-child) {
   margin-bottom: 20px;
+}
+.comments {
+  margin-top: 20px;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .comment-editor {

@@ -62,13 +62,13 @@ const hasImage = computed(() => props.event?.image?.url);
 .event-card__title {
   font-family: var(--app-font-family);
   padding-top: 15px;
-  font-size: 4.6vh;
+  /* font-size: 4.6vh; */
 }
 .event-card__organizer {
   color: #48a67c;
 }
 .event-card__description {
-  font-size: 2vh;
+  /* font-size: 2vh; */
   margin-bottom: 10px;
 }
 .truncate-text {

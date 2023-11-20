@@ -7,7 +7,7 @@
 // Plugins
 import router from "../router";
 import pinia from "../store";
-import { useTwicPics } from "./twitpic";
+import { useTwicPics } from "./twicpics";
 import vuetify from "./vuetify";
 import { loadFonts } from "./webfontloader";
 
