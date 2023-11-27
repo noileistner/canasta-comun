@@ -3,6 +3,7 @@ import ContentContainer from "@/components/ContentContainer.vue";
 import EventCommentSection from "@/components/EventCommentSection.vue";
 import EventParticipantsSection from "@/components/EventParticipantsSection.vue";
 import { useEvents } from "@/composables/useEvents";
+import router from "@/router";
 import { ref } from "vue";
 
 import { computed, onMounted } from "vue";
@@ -18,13 +19,10 @@ const error = ref(null);
 async function load() {
   if (id.value) {
     await loadEvent(id.value);
-    if (!event.value) {
-      //TODO: render error
-      window.alert("event not found", id.value);
-    }
-  } else {
-    // TODO: render error 404
-    window.alert("no id");
+  }
+
+  if (!event.value) {
+    router.push({ name: "PageNotFound" });
   }
 }
 
@@ -44,6 +42,15 @@ async function toggleEventParticipation() {
 }
 
 onMounted(() => load());
+
+const image = computed(() => {
+  if (event.value?.image) {
+    return event.value?.image;
+  }
+  return {
+    path: "/istock/id/139378824/photo/sunset-on-the-game.jpg?s=612x612&w=0&k=20&c=l0T85knkZebrgWijEPS4phaw8mzy8IMLK2_JghzaOKg=",
+  };
+});
 </script>
 
 <template>
@@ -86,8 +93,7 @@ onMounted(() => load());
 
       <template #image>
         <v-card variant="flat" min-width="300">
-          <TwicImg v-if="event.image" class="event-details__image" :src="event.image.path" />
-          <div v-else>this is da placeholder</div>
+          <TwicImg class="event-details__image" :src="image.path" />
         </v-card>
       </template>
 
@@ -131,7 +137,7 @@ onMounted(() => load());
 }
 .event-details__title {
   font-family: var(--app-font-family);
-  /* font-size: 6vh; */
+  font-size: 230%;
   padding-top: 10px;
 }
 .event-details__organizer {

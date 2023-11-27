@@ -21,11 +21,6 @@ const createdAt = computed(() => {
 <template>
   <v-card :title="author?.name" :subtitle="createdAt" class="comment">
     <template #prepend>
-      <!-- <v-avatar color="secondary">
-        <TwicImg v-if="author.image" :src="author.image.path" />
-        <v-icon v-else icon="fa:fas fa-user" />
-      </v-avatar> -->
-
       <router-link :to="{ name: 'ProfilePage', params: { id: author.id } }">
         <UserAvatar :user="author" color="grey" size="40px" />
       </router-link>

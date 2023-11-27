@@ -20,7 +20,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
       </v-col>
       <v-col>
         <HomeDescriptionBox icon="edit">
-          <p class="home-description__text">Planifica y juega partidos de basquet</p>
+          <p class="home-description__text">Planifica y juega partidos de básquet</p>
 
           <p class="home-description__sub-text">Prueba tus habilidades y diviértete</p>
           <router-link :to="{ name: 'CreateEvent' }">
@@ -46,7 +46,7 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
 
 .home-description__title {
   color: #fff;
-  font-size: 5vh;
+  /* font-size: 230%; */
   padding-bottom: 20px;
 }
 .home-description__text {

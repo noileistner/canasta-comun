@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "../store/session";
 import NavbarSearchBox from "./NavbarSearchBox.vue";
+import UserAvatar from "./UserAvatar.vue";
 
 const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
 </script>
@@ -22,7 +23,7 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
       </router-link>
 
       <router-link :to="{ name: 'ProfilePage', params: { id: currentUser.id } }" v-if="currentUser">
-        <i class="font-icon-user fa-solid fa-user"></i>
+        <UserAvatar :user="currentUser" />
       </router-link>
 
       <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">

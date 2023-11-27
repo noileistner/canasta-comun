@@ -74,20 +74,22 @@ async function signIn(userProvider) {
         />
         <p v-if="errMsg">{{ errMsg }}</p>
 
-        <v-btn
-          @click="signInWithCredentials"
-          :loading="isSubmitting"
-          type="submit"
-          block
-          class="mt-2"
-          color="tertiary"
-          rounded
-        >
-          <p class="signIn__btn">Continuar</p>
-        </v-btn>
-        <v-btn @click="signInWithGoogle" type="submit" block class="mt-2" color="secondary" rounded>
-          <p class="signIn__btn">Iniciar sesión con Google</p>
-        </v-btn>
+        <div class="signIn__btns">
+          <v-btn
+            @click="signInWithCredentials"
+            :loading="isSubmitting"
+            type="submit"
+            block
+            class="mt-2"
+            color="tertiary"
+            rounded
+          >
+            <p class="signIn__btn">Continuar</p>
+          </v-btn>
+          <v-btn @click="signInWithGoogle" type="submit" block class="mt-2" color="secondary" rounded>
+            <p class="signIn__btn">Iniciar sesión con Google</p>
+          </v-btn>
+        </div>
       </v-form>
 
       <v-card-text class="text-center">
@@ -105,8 +107,9 @@ async function signIn(userProvider) {
 .signIn__title {
   font-family: var(--app-font-family);
 }
-.signIn__btn {
-  font-size: 1.8vh;
+.signIn__btns {
+  display: grid;
+  justify-content: center;
 }
 
 @media (max-width: 600px) {

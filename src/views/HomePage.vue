@@ -1,9 +1,9 @@
 <script setup>
-import Intro from "../components/HomeIntro.vue";
-import Description from "../components/HomeDescription.vue";
-import EventList from "../components/EventList.vue";
-import { useSessionStore } from "../store/session";
 import { storeToRefs } from "pinia";
+import EventList from "../components/EventList.vue";
+import Description from "../components/HomeDescription.vue";
+import Intro from "../components/HomeIntro.vue";
+import { useSessionStore } from "../store/session";
 
 const { isLoggedIn } = storeToRefs(useSessionStore());
 </script>
@@ -12,6 +12,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   <div class="homepage">
     <Intro v-if="!isLoggedIn" />
     <Description v-if="!isLoggedIn" />
+    <h1 class="event-list__title">Descubre partidos próximos</h1>
     <EventList />
   </div>
 </template>
@@ -21,5 +22,11 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.event-list__title {
+  /* font-size: 160%; */
+  font-family: var(--app-font-family);
+  display: flex;
+  justify-content: center;
 }
 </style>

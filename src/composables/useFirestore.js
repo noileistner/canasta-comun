@@ -17,8 +17,10 @@ export function useFirestore(path) {
 
   return {
     db,
-    collection: collection(db, path),
-    doc: (id) => doc(db, path, id),
+    collection: (...args) => collection(db, path, ...args),
+    doc: (id, ...args) => {
+      return doc(db, path, id, ...args);
+    },
     docSnapToModel,
   };
 }

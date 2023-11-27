@@ -12,10 +12,22 @@ export const useUserStore = defineStore("user", () => {
   }
 
   async function findByEmail(email) {
-    const q = query(collection, where("email", "==", email));
+    const q = query(collection(), where("email", "==", email));
     const querySnapshot = await getDocs(q);
     const docSnap = querySnapshot?.docs.at(0);
     return docSnapToModel(docSnap);
+  }
+
+  async function findAll(searchTerm) {
+    const searchName = searchTerm.toLowerCase();
+    const q = query(
+      collection(),
+      where("searchName", ">=", searchName),
+      where("searchName", "<", `${searchName}\uf8ff`),
+    );
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot?.docs.map(docSnapToModel) ?? [];
   }
 
   async function findOrCreateByEmail(email, attributes = {}) {
@@ -31,6 +43,10 @@ export const useUserStore = defineStore("user", () => {
     payload.createdAt = Date.now();
     payload.updatedAt = Date.now();
 
+    if (payload.name) {
+      payload.searchName = payload.name?.toLowerCase();
+    }
+
     if (imageUrl) {
       payload.image = {
         url: imageUrl,
@@ -38,7 +54,7 @@ export const useUserStore = defineStore("user", () => {
       };
     }
 
-    const docRef = await addDoc(collection, payload);
+    const docRef = await addDoc(collection(), payload);
     if (docRef) {
       return await find(docRef.id);
     }
@@ -46,6 +62,9 @@ export const useUserStore = defineStore("user", () => {
 
   async function update(id, attributes) {
     const docRef = doc(id);
+    if (attributes.name) {
+      attributes.searchName = attributes.name.toLowerCase();
+    }
     await updateDoc(docRef, { ...attributes, updatedAt: Date.now() });
     return await find(id);
   }
@@ -56,6 +75,7 @@ export const useUserStore = defineStore("user", () => {
     update,
     find,
     findByEmail,
+    findAll,
     findOrCreateByEmail,
   };
 });

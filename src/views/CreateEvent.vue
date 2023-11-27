@@ -86,6 +86,9 @@ async function addEvent(values) {
 }
 
 async function uploadImage() {
+  if (!image.value) {
+    return;
+  }
   const [file] = image.value;
   if (!file) {
     return;
@@ -114,6 +117,9 @@ function createImage(file) {
 }
 
 function onFileChange() {
+  if (!image.value) {
+    return;
+  }
   const [file] = image.value;
 
   if (!file) {

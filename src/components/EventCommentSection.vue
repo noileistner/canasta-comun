@@ -1,6 +1,9 @@
 <script setup>
+import { useSessionStore } from "@/store/session";
+import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import EventComment from "./EventComment.vue";
+const { currentUser } = storeToRefs(useSessionStore());
 
 const emit = defineEmits(["comment:add"]);
 
@@ -15,7 +18,7 @@ const DEFAULT_COMMENTS_LIST_SIZE = 3;
 const showAll = ref(false);
 
 const comments = computed(() => {
-  const comments = props.comments ?? [];
+  const comments = (props.comments ?? []).sort((a, b) => b.createdAt - a.createdAt);
 
   if (showAll.value) {
     return comments;
@@ -37,11 +40,19 @@ function toggleShowAll() {
 
 const newComment = ref(null);
 const canCreateNewComment = computed(() => newComment.value?.length > 0);
+const creatNewCommentPermitted = computed(() => currentUser.value);
 
 function addComment() {
   emit("comment:add", newComment.value);
   newComment.value = null;
 }
+
+const textEditorMessage = computed(() => {
+  if (!creatNewCommentPermitted.value) {
+    return "Inicia sesión para comentar.";
+  }
+  return "";
+});
 </script>
 
 <template>
@@ -55,7 +66,15 @@ function addComment() {
     </div>
 
     <div class="comment-editor">
-      <v-textarea v-model="newComment" placeholder="Escribe un comentario..." rows="1" auto-grow variant="outlined">
+      <v-textarea
+        :readonly="!creatNewCommentPermitted"
+        v-model="newComment"
+        placeholder="Escribe un comentario..."
+        rows="1"
+        auto-grow
+        variant="outlined"
+        :messages="textEditorMessage"
+      >
         <template #append>
           <v-btn icon @click="addComment" :disabled="!canCreateNewComment">
             <v-icon icon="fa:fas fa-paper-plane" />

@@ -158,11 +158,9 @@ async function load() {
   if (id.value) {
     await loadEvent(id.value);
     if (!event.value) {
-      //TODO: render error
-      window.alert("event not found", id.value);
+      router.push({ name: "PageNotFound" });
     }
   } else {
-    // TODO: render error 404
     window.alert("no id");
   }
 }

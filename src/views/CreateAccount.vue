@@ -99,15 +99,17 @@ async function createAccount(userProvider, name) {
           hint="Introduzca una contraseña con un mínimo de 6 caracteres"
         />
 
-        <v-btn :loading="isSubmitting" type="submit" rounded width="100%" class="mt-2" color="tertiary">
-          Continuar
-        </v-btn>
+        <div class="create-account__btn">
+          <v-btn :loading="isSubmitting" type="submit" rounded width="100%" class="mt-2" color="tertiary">
+            Continuar
+          </v-btn>
 
-        <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-        <v-btn @click="createAccountWithGoogle" rounded width="100%" class="mt-2" color="secondary">
-          Crear cuenta con Google
-        </v-btn>
+          <v-btn @click="createAccountWithGoogle" rounded width="100%" class="mt-2" color="secondary">
+            Crear cuenta con Google
+          </v-btn>
+        </div>
       </v-form>
 
       <v-card-text class="text-center">
@@ -124,6 +126,11 @@ async function createAccount(userProvider, name) {
 }
 .create-account__title {
   font-family: var(--app-font-family);
+}
+
+.create-account__btn {
+  display: grid;
+  justify-content: center;
 }
 
 @media (max-width: 600px) {

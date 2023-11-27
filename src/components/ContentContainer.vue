@@ -29,15 +29,13 @@
         <slot name="comments" />
       </v-col>
     </v-row>
-
-    <slot name="foo" />
   </div>
 </template>
 
 <style scoped>
 .content-container {
   padding-top: 15px;
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
   width: 70%;
   margin: auto;
   display: grid;

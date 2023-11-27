@@ -8,19 +8,25 @@ const props = defineProps({
   },
 });
 
-const hasImage = computed(() => props.event?.image?.url);
+const image = computed(() => {
+  if (props.event?.image) {
+    return props.event.image;
+  }
+  return {
+    path: "/istock/id/139378824/photo/sunset-on-the-game.jpg?s=612x612&w=0&k=20&c=l0T85knkZebrgWijEPS4phaw8mzy8IMLK2_JghzaOKg=",
+  };
+});
 </script>
 
 <template>
   <v-card class="event-card" max-width="700">
-    <TwicImg v-if="hasImage" class="event-card__image" :src="event.image.path" cover />
+    <TwicImg class="event-card__image" :src="image.path" cover />
 
     <v-card-title class="event-card__title">{{ event.name }}</v-card-title>
 
     <v-card-text>
       Organizado por
       <router-link class="event-card__organizer" :to="{ name: 'ProfilePage', params: { id: event.organizer.id } }">
-        <!-- TODO: add link to user's profile -->
         {{ event.organizer.name }}
       </router-link>
     </v-card-text>
@@ -59,6 +65,9 @@ const hasImage = computed(() => props.event?.image?.url);
 .event-card__image {
   aspect-ratio: 5/3;
 }
+.event-card__icon {
+  height: 200px;
+}
 .event-card__title {
   font-family: var(--app-font-family);
   padding-top: 15px;
@@ -78,17 +87,7 @@ const hasImage = computed(() => props.event?.image?.url);
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* max-height: calc(1.5em * 3); */
 }
-/* .truncate-text::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 1.5em;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
-/* } */
 .event-card__item {
   padding: 5px;
   padding-left: 16px;

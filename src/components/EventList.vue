@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useEventsStore } from "../store/events";
 import EventCard from "./EventCard.vue";
@@ -8,6 +8,18 @@ import EventCard from "./EventCard.vue";
 const { events } = storeToRefs(useEventsStore());
 const { loadAll } = useEventsStore();
 const router = useRouter();
+
+const props = defineProps({
+  organizer: Object,
+  maxWidth: [String, Number],
+});
+
+const filteredEvents = computed(() => {
+  if (props.organizer) {
+    return events.value?.filter((event) => event.organizer?.id === props.organizer.id);
+  }
+  return events.value;
+});
 
 function navigateToDetail(eventId) {
   router.push({ name: "EventDetails", params: { id: eventId } });
@@ -18,9 +30,14 @@ onMounted(() => loadAll());
 
 <template>
   <div class="event-list">
-    <h1 class="event-list__title">Descubre partidos próximos</h1>
     <div class="event-list__container">
-      <EventCard v-for="event in events" :key="event.id" :event="event" @click="navigateToDetail(event.id)" />
+      <EventCard
+        v-for="event in filteredEvents"
+        :max-width="maxWidth"
+        :key="event.id"
+        :event="event"
+        @click="navigateToDetail(event.id)"
+      />
     </div>
   </div>
 </template>
@@ -29,10 +46,7 @@ onMounted(() => loadAll());
 .event-list {
   text-align: center;
 }
-.event-list__title {
-  font-size: 5vh;
-  font-family: var(--app-font-family);
-}
+
 .event-list__container {
   display: grid;
   justify-items: center;

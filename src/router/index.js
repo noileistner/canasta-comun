@@ -9,6 +9,7 @@ import EditEvent from "../views/EditEvent.vue";
 import EditProfile from "../views/EditProfile.vue";
 import EventDetails from "../views/EventDetails.vue";
 import HomePage from "../views/HomePage.vue";
+import PageNotFound from "../views/PageNotFound.vue";
 import ProfilePage from "../views/ProfilePage.vue";
 import SignIn from "../views/SignIn.vue";
 
@@ -87,6 +88,11 @@ const routes = [
     path: "/contactanos",
     name: "ContactUs",
     component: ContactUs,
+  },
+  {
+    path: "/:catchAll(.*)*",
+    name: "PageNotFound",
+    component: PageNotFound,
   },
 ];
 
