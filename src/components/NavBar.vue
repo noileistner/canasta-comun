@@ -42,7 +42,27 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
         </template>
 
         <v-list>
-          <v-list-item>hello</v-list-item>
+          <v-list-item>
+            <router-link :to="{ name: 'ProfilePage', params: { id: currentUser.id } }" v-if="currentUser">
+              <UserAvatar :user="currentUser" /> Mi perfil
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link :to="{ name: 'CreateEvent' }" v-if="isLoggedIn"> Organiza un partido </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">
+              <v-btn class="nav-bar__account">Crear cuenta</v-btn>
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link :to="{ name: 'SignIn' }" v-if="!isLoggedIn">
+              <v-btn class="nav-bar__account">Iniciar sesión</v-btn>
+            </router-link>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>

@@ -15,7 +15,9 @@ import ContentContainer from "./ContentContainer.vue";
 
       <!-- TODO: when click button go to create event after signIn  -->
       <router-link :to="{ name: 'CreateEvent' }">
-        <v-btn class="home-intro__button" rounded color="secondary" size="large">Organiza un partido</v-btn>
+        <v-btn class="home-intro__button" rounded color="secondary" size="large">
+          <p class="home-intro__button__text">Organiza un partido</p>
+        </v-btn>
       </router-link>
 
       <router-link :to="{ name: 'CreateAccount' }">
@@ -50,6 +52,9 @@ import ContentContainer from "./ContentContainer.vue";
 
 .home-intro__button {
   margin-bottom: 15px;
+}
+.home-intro__button__text {
+  font-size: 1.7vh;
 }
 
 @media (max-width: 600px) {

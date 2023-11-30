@@ -7,9 +7,6 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 
 <template>
   <div class="footer">
-    <router-link :to="{ name: 'ContactUs' }">
-      <p class="footer__word">Contáctanos</p>
-    </router-link>
     <router-link :to="{ name: 'AboutMe' }">
       <p class="footer__word">Sobre</p>
     </router-link>

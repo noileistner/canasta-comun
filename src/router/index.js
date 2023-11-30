@@ -2,7 +2,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 
 import AboutMe from "../views/AboutMe.vue";
-import ContactUs from "../views/ContactUs.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import CreateEvent from "../views/CreateEvent.vue";
 import EditEvent from "../views/EditEvent.vue";
@@ -83,11 +82,6 @@ const routes = [
     path: "/sobre",
     name: "AboutMe",
     component: AboutMe,
-  },
-  {
-    path: "/contactanos",
-    name: "ContactUs",
-    component: ContactUs,
   },
   {
     path: "/:catchAll(.*)*",

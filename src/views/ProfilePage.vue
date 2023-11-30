@@ -140,8 +140,15 @@ onMounted(async () => {
             <span v-if="user.location" class="profile__icon-text">{{ user.location }}</span>
           </v-card-text>
 
-          <v-card-text class="profile__details profile__all"> Followers: {{ followersCount }} </v-card-text>
-          <v-card-text class="profile__details profile__all"> Following: {{ followingCount }} </v-card-text>
+          <v-row class="profile__follow">
+            <v-col cols="6">
+              <v-card-text> Seguidores: {{ followersCount }} </v-card-text>
+            </v-col>
+
+            <v-col cols="6">
+              <v-card-text> Siguiendo: {{ followingCount }} </v-card-text>
+            </v-col>
+          </v-row>
         </v-card>
 
         <template #image>
@@ -207,6 +214,9 @@ onMounted(async () => {
 .profile__details {
   /* font-size: 2vh; */
   opacity: 0.8;
+}
+.profile__follow {
+  width: 290px;
 }
 .profile__description {
   /* font-size: 1.8vh; */

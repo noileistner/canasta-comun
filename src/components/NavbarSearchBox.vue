@@ -72,8 +72,8 @@ function itemSubtitle(item) {
         hide-details
         single-line
         rounded
-        placeholder="buscar evento o usarios"
-        no-data-text="ni events ni usarios encontrado..."
+        placeholder="buscar"
+        no-data-text="ni partidos ni usuarios encontrados..."
         return-object
         :loading="loading"
         :error="error"
