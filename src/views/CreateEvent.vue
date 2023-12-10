@@ -37,7 +37,7 @@ const { handleSubmit } = useForm({
     description(value) {
       if (value?.length <= 500) return true;
 
-      return "Ubicación tiene que ser válida.";
+      return "Descripción tiene que ser válida.";
     },
   },
 });

@@ -123,6 +123,7 @@ async function createAccount(userProvider, name) {
 <style scoped>
 .create-account-input {
   width: 70%;
+  padding-bottom: 115px;
 }
 .create-account__title {
   font-family: var(--app-font-family);

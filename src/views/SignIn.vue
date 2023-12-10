@@ -103,6 +103,7 @@ async function signIn(userProvider) {
 <style scoped>
 .signIn-input {
   width: 70%;
+  padding-bottom: 200px;
 }
 .signIn__title {
   font-family: var(--app-font-family);

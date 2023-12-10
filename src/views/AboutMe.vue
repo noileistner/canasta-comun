@@ -1,6 +1,7 @@
 <script></script>
 
 <template>
+  <h1 class="about-title">Desarrollo de una página web: Canastacomun</h1>
   <div class="about-all">
     <iframe
       class="about"
@@ -16,6 +17,12 @@
   height: 555px;
   width: 60%;
   margin-bottom: 30px;
+}
+.about-title {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+  font-family: var(--app-font-family);
 }
 .about-all {
   display: flex;

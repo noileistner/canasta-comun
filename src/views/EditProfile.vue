@@ -167,11 +167,7 @@ onMounted(() => setDefaultValues());
             label="Cumple"
           />
 
-          <v-text-field
-            v-model="location.value.value"
-            :error-messages="location.errorMessage.value"
-            label="Población"
-          />
+          <v-text-field v-model="location.value.value" :error-messages="location.errorMessage.value" label="Ciudad" />
 
           <v-file-input
             v-model="image"
