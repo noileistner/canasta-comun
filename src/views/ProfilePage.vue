@@ -4,22 +4,14 @@ import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 import EventList from "@/components/EventList.vue";
-import { useFollowerStore } from "@/store/follower";
-import { useFollowingStore } from "@/store/following";
 import { useSessionStore } from "@/store/session";
 import { useUserStore } from "@/store/user";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import FollowStatus from "./FollowStatus.vue";
 
 const { find: findUser } = useUserStore();
-const {
-  create: addFollowing,
-  remove: removeFollowing,
-  find: findFollowing,
-  count: getFollowingCount,
-} = useFollowingStore();
-const { create: addFollower, remove: removeFollower, count: getFollowersCount } = useFollowerStore();
 const { currentUser } = storeToRefs(useSessionStore());
 
 const router = useRouter();
@@ -30,29 +22,6 @@ const user = ref(null);
 const isCurrentUser = computed(() => {
   return id.value && currentUser.value?.id === id.value;
 });
-
-const isFollowedByCurrentUser = ref(false);
-async function computeIsFollowedByCurrentUser() {
-  if (!user.value || isCurrentUser.value || !currentUser.value) {
-    isFollowedByCurrentUser.value = false;
-  } else {
-    isFollowedByCurrentUser.value = await findFollowing(currentUser.value.id, user.value.id);
-  }
-}
-
-const followersCount = ref(0);
-async function computeFollowersCount() {
-  followersCount.value = user.value ? await getFollowersCount(user.value.id) : 0;
-}
-
-const followingCount = ref(0);
-async function computeFollowingCount() {
-  followingCount.value = user.value ? await getFollowingCount(user.value.id) : 0;
-}
-
-async function updateAsyncComputedValues() {
-  await Promise.all([computeIsFollowedByCurrentUser(), computeFollowersCount(), computeFollowingCount()]);
-}
 
 async function loadUser() {
   if (id.value) {
@@ -77,45 +46,10 @@ function handleSignOut() {
     });
 }
 
-const toggleFollowButtonLabel = computed(() => (isFollowedByCurrentUser.value ? "Dejar de seguir" : "Seguir"));
-const isUpdatingFollowing = ref(false);
-const updateFollowingError = ref(null);
-
-async function toggleFollow() {
-  isUpdatingFollowing.value = true;
-  updateFollowingError.value = null;
-
-  try {
-    const fn = isFollowedByCurrentUser.value ? unfollow : follow;
-    await fn();
-  } catch (error) {
-    console.error(error);
-    updateFollowingError.value = `${toggleFollowButtonLabel.value} failed.`;
-  } finally {
-    isUpdatingFollowing.value = false;
-  }
-}
-
-async function follow() {
-  return await Promise.all([
-    addFollowing(currentUser.value.id, user.value),
-    addFollower(user.value.id, currentUser.value),
-  ]);
-}
-
-async function unfollow() {
-  return await Promise.all([
-    removeFollowing(currentUser.value.id, user.value),
-    removeFollower(user.value.id, currentUser.value),
-  ]);
-}
-
 watch(id, loadUser);
-watch([isUpdatingFollowing, currentUser, user], () => updateAsyncComputedValues());
 
 onMounted(async () => {
   await loadUser();
-  await updateAsyncComputedValues();
 });
 </script>
 
@@ -140,15 +74,7 @@ onMounted(async () => {
             <span v-if="user.location" class="profile__icon-text">{{ user.location }}</span>
           </v-card-text>
 
-          <v-row class="profile__follow">
-            <v-col cols="6">
-              <v-card-text> Seguidores: {{ followersCount }} </v-card-text>
-            </v-col>
-
-            <v-col cols="6">
-              <v-card-text> Siguiendo: {{ followingCount }} </v-card-text>
-            </v-col>
-          </v-row>
+          <FollowStatus :user="user" />
         </v-card>
 
         <template #image>
@@ -171,17 +97,6 @@ onMounted(async () => {
 
             <v-btn class="profile__btn" rounded color="tertiary" @click="handleSignOut">Cerrar sesión</v-btn>
           </template>
-
-          <v-btn
-            v-else
-            class="profile__btn"
-            rounded
-            color="secondary"
-            @click="toggleFollow"
-            :loading="isUpdatingFollowing"
-          >
-            {{ toggleFollowButtonLabel }}
-          </v-btn>
         </template>
       </ContentContainer>
 

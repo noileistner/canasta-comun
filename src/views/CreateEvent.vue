@@ -4,7 +4,7 @@ import { useSessionStore } from "@/store/session";
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import { storeToRefs } from "pinia";
 import { useField, useForm } from "vee-validate";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFirebase } from "../composables/useFirebase";
 
@@ -57,6 +57,11 @@ const submit = handleSubmit(async (values) => {
 
 const isSubmitting = ref(false);
 const error = ref(false);
+
+const minDate = computed(() => {
+  const date = new Date();
+  return date.toISOString().split("T")[0];
+});
 
 /**
  * Creates a new event and stores it in firestore
@@ -150,6 +155,7 @@ function onFileChange() {
                 v-model="date.value.value"
                 :error-messages="date.errorMessage.value"
                 type="date"
+                :min="minDate"
                 label="Fecha del evento"
               />
             </v-col>
