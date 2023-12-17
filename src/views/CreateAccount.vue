@@ -98,7 +98,9 @@ async function createAccount(userProvider, name) {
     <v-alert type="error" v-if="error" :text="error" />
 
     <v-card class="mx-auto pb-8" max-width="800" elevation="0">
-      <template v-if="awaitsEmailConfirmation"> Confirma tu email </template>
+      <template v-if="awaitsEmailConfirmation">
+        <h1 class="confirm">Confirma tu email</h1>
+      </template>
       <template v-else>
         <h1 class="create-account__title">Crea una cuenta</h1>
 
@@ -146,6 +148,9 @@ async function createAccount(userProvider, name) {
 .create-account-input {
   width: 70%;
   padding-bottom: 115px;
+}
+.confirm {
+  font-family: var(--app-font-family);
 }
 .create-account__title {
   font-family: var(--app-font-family);

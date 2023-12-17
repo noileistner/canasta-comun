@@ -38,6 +38,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 .footer a {
   display: inline-block;
   margin-right: 40px;
+  margin-bottom: 20px;
   color: white;
   opacity: 0.7;
   transition: 0.2 ease color;
