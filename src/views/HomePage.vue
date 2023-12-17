@@ -22,6 +22,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-bottom: 80px;
 }
 .event-list__title {
   /* font-size: 160%; */

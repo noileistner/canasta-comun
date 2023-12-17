@@ -229,6 +229,7 @@ function onFileChange() {
 <style scoped>
 .create-event {
   width: 70%;
+  margin-bottom: 100px;
 }
 .create-event__title {
   font-family: var(--app-font-family);
