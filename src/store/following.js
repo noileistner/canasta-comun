@@ -1,4 +1,4 @@
-import { deleteDoc, getCountFromServer, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, getCountFromServer, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { useFirestore } from "../composables/useFirestore";
 
@@ -12,6 +12,11 @@ export const useFollowingStore = defineStore("following", () => {
   async function find(userId, followingUserId) {
     const docSnap = await getDoc(getDocRef(userId, followingUserId));
     return docSnapToModel(docSnap);
+  }
+
+  async function all(userId) {
+    const querySnap = await getDocs(collection(userId, "following"));
+    return querySnap.docs?.map((docSnap) => docSnapToModel(docSnap));
   }
 
   async function count(userId) {
@@ -31,6 +36,7 @@ export const useFollowingStore = defineStore("following", () => {
   return {
     // actions
     find,
+    all,
     create,
     remove,
     count,

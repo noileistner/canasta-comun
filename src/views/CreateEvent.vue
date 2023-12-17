@@ -1,4 +1,6 @@
 <script setup>
+import { useDate } from "@/composables/useDate";
+import { useFirebase } from "@/composables/useFirebase";
 import { useEventsStore } from "@/store/events";
 import { useSessionStore } from "@/store/session";
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
@@ -6,11 +8,12 @@ import { storeToRefs } from "pinia";
 import { useField, useForm } from "vee-validate";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useFirebase } from "../composables/useFirebase";
 
 const { currentUser } = storeToRefs(useSessionStore());
 const { create: createEvent } = useEventsStore();
 const router = useRouter();
+
+const { today } = useDate();
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -58,10 +61,7 @@ const submit = handleSubmit(async (values) => {
 const isSubmitting = ref(false);
 const error = ref(false);
 
-const minDate = computed(() => {
-  const date = new Date();
-  return date.toISOString().split("T")[0];
-});
+const minDate = computed(() => today());
 
 /**
  * Creates a new event and stores it in firestore

@@ -18,7 +18,9 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
 
 <style scoped>
 .footer {
-  position: static;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
   margin: auto;
   padding: 25px;
   background: rgb(var(--v-theme-primary));

@@ -51,6 +51,12 @@ const image = computed(() => {
     path: "/istock/id/139378824/photo/sunset-on-the-game.jpg?s=612x612&w=0&k=20&c=l0T85knkZebrgWijEPS4phaw8mzy8IMLK2_JghzaOKg=",
   };
 });
+
+const sharing = computed(() => ({
+  title: event.value.name,
+  url: route.url,
+  description: event.value.description,
+}));
 </script>
 
 <template>
@@ -114,6 +120,8 @@ const image = computed(() => {
           {{ toggleParticipationButtonLabel }}
         </v-btn>
       </template>
+
+      <div class="sharethis-inline-share-buttons"></div>
 
       <template #participants>
         <EventParticipantsSection :participants="event.participants" />

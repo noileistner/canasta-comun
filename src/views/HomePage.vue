@@ -12,7 +12,7 @@ const { isLoggedIn } = storeToRefs(useSessionStore());
   <div class="homepage">
     <Intro v-if="!isLoggedIn" />
     <Description v-if="!isLoggedIn" />
-    <h1 class="event-list__title">Descubre partidos próximos</h1>
+    <h1 class="event-list__title">Descubre partidos</h1>
     <EventList />
   </div>
 </template>

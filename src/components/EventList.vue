@@ -1,35 +1,102 @@
 <script setup>
+import { useDate } from "@/composables/useDate";
+import { useEventsStore } from "@/store/events";
+import { useFollowingStore } from "@/store/following";
+import { useSessionStore } from "@/store/session";
 import { storeToRefs } from "pinia";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useEventsStore } from "../store/events";
+
+import { watch } from "vue";
 import EventCard from "./EventCard.vue";
 
 const { events } = storeToRefs(useEventsStore());
 const { loadAll } = useEventsStore();
 const router = useRouter();
 
+const { today } = useDate();
+
 const props = defineProps({
   organizer: Object,
   maxWidth: [String, Number],
 });
 
-const filteredEvents = computed(() => {
-  if (props.organizer) {
-    return events.value?.filter((event) => event.organizer?.id === props.organizer.id);
+const allFollowing = ref(null);
+const { all: findAllFollowing } = useFollowingStore();
+
+const { currentUser } = storeToRefs(useSessionStore());
+watch(
+  () => currentUser.value,
+  () => fetchAllFollowing(),
+);
+
+async function fetchAllFollowing() {
+  if (currentUser.value) {
+    allFollowing.value = await findAllFollowing(currentUser.value?.id);
+  } else {
+    allFollowing.value = null;
   }
-  return events.value;
+}
+
+const filters = {
+  all: "all",
+  following: "following",
+  upcoming: "upcoming",
+};
+
+const sourceFilter = ref(filters.all);
+const timeFilter = ref(filters.upcoming);
+
+const filteredEvents = computed(() => {
+  const minDate = today();
+  const relevantEvents = events.value?.filter(({ date }) => {
+    if (timeFilter.value === filters.upcoming) {
+      return date >= minDate;
+    }
+    return true;
+  });
+
+  if (props.organizer) {
+    return relevantEvents?.filter((event) => event.organizer?.id === props.organizer.id);
+  }
+
+  if (sourceFilter.value === filters.following) {
+    const ids = allFollowing.value?.map(({ id }) => id) ?? [];
+    return relevantEvents?.filter((event) => ids.includes(event.organizer?.id));
+  }
+
+  return relevantEvents;
 });
 
 function navigateToDetail(eventId) {
   router.push({ name: "EventDetails", params: { id: eventId } });
 }
 
-onMounted(() => loadAll());
+const showSourceFilter = computed(() => {
+  return !props.organizer && allFollowing.value?.length > 0;
+});
+
+onMounted(() => {
+  loadAll();
+  fetchAllFollowing();
+});
 </script>
 
 <template>
   <div class="event-list">
+    <v-btn-toggle v-if="showSourceFilter" mandatory color="secondary" v-model="sourceFilter">
+      <v-btn :value="filters.all">de todos</v-btn>
+      <v-btn :value="filters.following">de amigos</v-btn>
+    </v-btn-toggle>
+
+    <br />
+    <br />
+
+    <v-btn-toggle mandatory color="secondary" v-model="timeFilter">
+      <v-btn :value="filters.upcoming">próximos</v-btn>
+      <v-btn :value="filters.all">todos</v-btn>
+    </v-btn-toggle>
+
     <div class="event-list__container">
       <EventCard
         v-for="event in filteredEvents"

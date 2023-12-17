@@ -94,7 +94,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-card>
+  <v-card variant="flat">
     <v-card-text class="follow-status">
       <div v-for="section in sections" :key="section.name" class="follow-status__entry">
         <span class="follow-status__entry-count">

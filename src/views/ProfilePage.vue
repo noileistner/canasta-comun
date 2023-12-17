@@ -24,26 +24,27 @@ const isCurrentUser = computed(() => {
 });
 
 async function loadUser() {
-  if (id.value) {
-    user.value = await findUser(id.value);
-    if (!user.value) {
-      router.push({ name: "PageNotFound" });
-    }
+  if (!id.value) {
+    return;
+  }
+
+  user.value = await findUser(id.value);
+  if (!user.value) {
+    router.push({ name: "PageNotFound" });
   }
 }
 
 // sign out
 
-function handleSignOut() {
+async function handleSignOut() {
+  user.value = null;
   const auth = getAuth();
-  signOut(auth)
-    .then(() => {
-      console.log("success");
-      router.push("/");
-    })
-    .catch((error) => {
-      console.log("error", error);
-    });
+  try {
+    await signOut(auth);
+    router.push("/");
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 watch(id, loadUser);

@@ -10,12 +10,11 @@ const { findAll: findUsers } = useUserStore();
 const { findAll: findEvents } = useEventsStore();
 
 const items = ref([]);
-const selectedItem = ref(null);
 const loading = ref(false);
 const error = ref(null);
 
 async function search(searchTerm) {
-  if (searchTerm?.length < 3) {
+  if (searchTerm?.length < 1) {
     return;
   }
 
@@ -41,11 +40,11 @@ async function search(searchTerm) {
   }
 }
 
-function handleSelect() {
-  if (!selectedItem.value) {
+function handleSelect(selectedItem) {
+  if (!selectedItem) {
     return;
   }
-  const { isUser, id } = selectedItem.value;
+  const { isUser, id } = selectedItem;
   router.push({
     name: isUser ? "ProfilePage" : "EventDetails",
     params: { id },

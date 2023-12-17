@@ -36,9 +36,6 @@ import ContentContainer from "./ContentContainer.vue";
 </template>
 
 <style scoped>
-.home-intro {
-  /* padding-bottom: 50px; */
-}
 .home-intro__title {
   font-size: 250%;
   font-family: var(--app-font-family);
@@ -53,14 +50,10 @@ import ContentContainer from "./ContentContainer.vue";
 .home-intro__button {
   margin-bottom: 15px;
 }
-.home-intro__button__text {
-  font-size: 1.7vh;
-}
 
 @media (max-width: 600px) {
   .home-intro__button {
     height: 45px;
-    width: 160px;
   }
   .home-intro__image {
     height: 400;

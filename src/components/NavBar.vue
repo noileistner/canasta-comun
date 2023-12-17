@@ -42,6 +42,8 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
         </template>
 
         <v-list>
+          <NavbarSearchBox />
+
           <v-list-item>
             <router-link :to="{ name: 'ProfilePage', params: { id: currentUser.id } }" v-if="currentUser">
               <UserAvatar :user="currentUser" /> Mi perfil
@@ -53,15 +55,11 @@ const { isLoggedIn, currentUser } = storeToRefs(useSessionStore());
           </v-list-item>
 
           <v-list-item>
-            <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn">
-              <v-btn class="nav-bar__account">Crear cuenta</v-btn>
-            </router-link>
+            <router-link :to="{ name: 'CreateAccount' }" v-if="!isLoggedIn"> Crear cuenta </router-link>
           </v-list-item>
 
           <v-list-item>
-            <router-link :to="{ name: 'SignIn' }" v-if="!isLoggedIn">
-              <v-btn class="nav-bar__account">Iniciar sesión</v-btn>
-            </router-link>
+            <router-link :to="{ name: 'SignIn' }" v-if="!isLoggedIn"> Iniciar sesión </router-link>
           </v-list-item>
         </v-list>
       </v-menu>

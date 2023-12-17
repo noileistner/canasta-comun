@@ -28,6 +28,7 @@ async function signInWithGoogle() {
 
 const error = ref(null);
 const isSubmitting = ref(false);
+const showEmailNotConfirmedBanner = ref(false);
 
 async function signIn(userProvider) {
   try {
@@ -35,10 +36,15 @@ async function signIn(userProvider) {
     isSubmitting.value = true;
 
     const { user } = await userProvider();
-    const currentUser = await findByEmail(user.email);
-    setCurrentUser(currentUser);
+    const { emailVerified } = user;
 
-    router.push({ name: "HomePage" });
+    if (emailVerified) {
+      const currentUser = await findByEmail(user.email);
+      setCurrentUser(currentUser);
+      router.push({ name: "HomePage" });
+    } else {
+      showEmailNotConfirmedBanner.value = true;
+    }
   } catch (e) {
     console.log(e.code);
 
@@ -59,6 +65,9 @@ async function signIn(userProvider) {
 <template>
   <v-container class="signIn-input">
     <v-alert type="error" v-if="error" :text="error" />
+    <v-alert type="warning" v-if="showEmailNotConfirmedBanner">
+      Keule, mach dir email bestätigt! und gomm iwdder
+    </v-alert>
 
     <v-card class="mx-auto pb-8" max-width="800" elevation="0">
       <h1 class="signIn__title">Inicia sesión con una cuenta existente</h1>
@@ -93,7 +102,7 @@ async function signIn(userProvider) {
       </v-form>
 
       <v-card-text class="text-center">
-        Aun no tienes cuenta?
+        Aún no tienes cuenta?
         <router-link class="router-link" :to="{ name: 'CreateAccount' }"> Crear cuenta </router-link>
       </v-card-text>
     </v-card>
@@ -117,6 +126,7 @@ async function signIn(userProvider) {
   .signIn-input {
     width: 90%;
     padding: 0;
+    padding-bottom: 200px;
   }
   .signIn__title {
     font-size: 3vh;

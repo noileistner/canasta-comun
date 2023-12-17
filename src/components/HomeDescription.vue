@@ -41,16 +41,17 @@ import HomeDescriptionBox from "./HomeDescriptionBox.vue";
   text-align: center;
   justify-content: center;
   padding-top: 20px;
-  font-family: var(--app-font-family);
 }
 
 .home-description__title {
+  font-family: var(--app-font-family);
   color: #fff;
   /* font-size: 230%; */
   padding-bottom: 20px;
 }
 .home-description__text {
   font-size: 120%;
+  font-family: var(--app-font-family);
 }
 
 .home-description__sub-text {
