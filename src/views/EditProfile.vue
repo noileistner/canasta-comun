@@ -216,6 +216,7 @@ onMounted(() => setDefaultValues());
 <style scoped>
 .edit-profile {
   width: 70%;
+  margin-bottom: 80px;
 }
 .edit-profile__title {
   font-family: var(--app-font-family);

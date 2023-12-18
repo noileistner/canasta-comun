@@ -38,21 +38,21 @@ async function signIn(userProvider) {
     const { user } = await userProvider();
     const { emailVerified } = user;
 
-    if (emailVerified) {
-      const currentUser = await findByEmail(user.email);
-      setCurrentUser(currentUser);
-      router.push({ name: "HomePage" });
-    } else {
-      showEmailNotConfirmedBanner.value = true;
-    }
+    // if (emailVerified) {
+    const currentUser = await findByEmail(user.email);
+    setCurrentUser(currentUser);
+    router.push({ name: "HomePage" });
+    // } else {
+    //   showEmailNotConfirmedBanner.value = true;
+    // }
   } catch (e) {
     console.log(e.code);
 
     const errorCodeMapping = {
-      "auth/invalid-email": "Invalid Email",
-      "auth/user-not-found": "No account with that email was found",
-      "auth/wrong-password": "Incorrect Password",
-      default: "Email or password was incorrect",
+      "auth/invalid-email": "Email inválido",
+      "auth/user-not-found": "No se encontró ninguna cuenta con este correo electrónico",
+      "auth/wrong-password": "Contraseña incorrecta",
+      default: "Email o contraseña incorrecto",
     };
 
     error.value = errorCodeMapping[e.code] ?? errorCodeMapping.default;
@@ -65,9 +65,9 @@ async function signIn(userProvider) {
 <template>
   <v-container class="signIn-input">
     <v-alert type="error" v-if="error" :text="error" />
-    <v-alert type="warning" v-if="showEmailNotConfirmedBanner">
+    <!-- <v-alert type="warning" v-if="showEmailNotConfirmedBanner">
       Keule, mach dir email bestätigt! und gomm iwdder
-    </v-alert>
+    </v-alert> -->
 
     <v-card class="mx-auto pb-8" max-width="800" elevation="0">
       <h1 class="signIn__title">Inicia sesión con una cuenta existente</h1>

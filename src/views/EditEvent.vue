@@ -265,6 +265,7 @@ onMounted(() => load());
 <style scoped>
 .create-event {
   width: 70%;
+  margin-bottom: 80px;
 }
 .create-event__title {
   font-family: var(--app-font-family);
