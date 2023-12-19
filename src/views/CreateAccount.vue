@@ -100,6 +100,10 @@ async function createAccount(userProvider, name) {
     <v-card class="mx-auto pb-8" max-width="800" elevation="0">
       <template v-if="awaitsEmailConfirmation">
         <h1 class="confirm">Confirma tu email</h1>
+        <p>Recarga la página para acelerar el proceso</p>
+        <v-btn rounded class="mt-2" color="secondary">
+          <router-link to="/" style="color: white">Continuar</router-link>
+        </v-btn>
       </template>
       <template v-else>
         <h1 class="create-account__title">Crea una cuenta</h1>
